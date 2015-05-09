@@ -1,4 +1,7 @@
-evodat<-read.csv(file.choose(), stringsAsFactors = FALSE,strip.white = TRUE, na.strings = c("NA","") ) #pair_hedges_avg_feb3
+#evodat<-read.csv(file.choose(), stringsAsFactors = FALSE,strip.white = TRUE, na.strings = c("NA","") ) #pair_hedges_avg_feb3
+setwd("C:/Users/Kira Delmore/Dropbox/Haley and Kira's Comparative Analysis Extravaganza/Analysis")
+evodat<-read.csv("../working files/pair_hedges_avg_feb3.csv",stringsAsFactors = FALSE,strip.white = TRUE, na.strings = c("NA",""))
+
 library(EvoRAG) #use EvoRAG 2
 
 models<-c("BM_null","OU_null") # set models
@@ -36,6 +39,7 @@ plot(t1,e1,xlim=c(0,10),ylim=c(0,1),main="all")
 par(new = TRUE) # to plot multiple plots on top of one another
 print(fit_all) # I've just been pasting output variables manually into the spreadsheet instead of exporting all thisdata (so inelegant...)
 
+## HALEY - how do we get the AICs for these models?
 
 ############## PARALLELS vs PERPENDICULARS
 
@@ -62,7 +66,7 @@ fit_perp <- model.test.sisters(e3,t3,l3,GRAD2=NULL,meserr1=0,meserr2=0,models,st
 plot(t3,e3,xlim=c(0,10),ylim=c(0,1),main="divide")
 print(fit_perp) #View model parameters
 
-#for perp confidence intervals
+#for perp confidence intervals (don't think we need to do this anymore)
 perpR<-bootstrap.test(e3,t3,l3, model="OU_null", parameters=c(0.009246617,0.239878507),meserr1=0, meserr2=0,breakpoint = "NULL", N = c(1000), starting=NULL) #need to fill in correct parameters
 perpR$summary
 
@@ -92,16 +96,16 @@ e5 <- evodat_parapatric$trait
 t5<-evodat_parapatric$p_distance_100
 l5<-evodat_parapatric$mass_avg
 fit_parapatric <- model.test.sisters(e5,t5,l5,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
-plot(t4,e4,xlim=c(0,10),ylim=c(0,1),main="parapatric")
+plot(t5,e5,xlim=c(0,10),ylim=c(0,1),main="parapatric")
 print(fit_parapatric) #View model parameters
 
 #sympatric
 evodat_sympatric<-subset(evodat,evodat$visual_official=="sym")
-e6 <- evodat_parapatric$trait
-t6<-evodat_parapatric$p_distance_100
-l6<-evodat_parapatric$mass_avg
+e6 <- evodat_sympatric$trait
+t6<-evodat_sympatric$p_distance_100
+l6<-evodat_sympatric$mass_avg
 fit_sympatric <- model.test.sisters(e6,t6,l6,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
-plot(t4,e4,xlim=c(0,10),ylim=c(0,1),main="sympatric")
+plot(t6,e6,xlim=c(0,10),ylim=c(0,1),main="sympatric")
 print(fit_sympatric) #View model parameters
 
 #to calculate AIC for patry###################### need to double-check these formulas
@@ -109,9 +113,88 @@ logLike_BM_patry<-fit_allo[1,1]+fit_parapatric[1,1]+fit_sympatric[1,1]
 AIC_BM_patry<-2*1-2*logLike_BM_patry
 print(AIC_BM_patry)
 
-logLike_OU_patry<-fit_allo[1,1]+fit_parapatric[1,1]+fit_sympatric[1,1]
+logLike_OU_patry<-fit_allo[1,2]+fit_parapatric[1,2]+fit_sympatric[1,2]
 AIC_OU_patry<-2*2-2*logLike_OU_patry
 print(AIC_OU_patry)
+
+
+#####################################PATRY with just allo or not
+#allopatric
+evodat_allo<-subset(evodat,evodat$visual_official_3=="no")
+e4 <- evodat_allo$trait
+t4<-evodat_allo$p_distance_100
+l4<-evodat_allo$mass_avg
+fit_allo <- model.test.sisters(e4,t4,l4,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+plot(t4,e4,xlim=c(0,10),ylim=c(0,1),main="allo")
+print(fit_allo) #View model parameters
+
+#not allopatric
+evodat_parapatric<-subset(evodat,evodat$visual_official_3=="flow")
+e5 <- evodat_parapatric$trait
+t5<-evodat_parapatric$p_distance_100
+l5<-evodat_parapatric$mass_avg
+fit_parapatric <- model.test.sisters(e5,t5,l5,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+plot(t5,e5,xlim=c(0,10),ylim=c(0,1),main="parapatric")
+print(fit_parapatric) #View model parameters
+
+#to calculate AIC for patry###################### need to double-check these formulas
+logLike_BM_patry<-fit_allo[1,1]+fit_parapatric[1,1]+fit_sympatric[1,1]
+AIC_BM_patry<-2*1-2*logLike_BM_patry
+print(AIC_BM_patry)
+
+logLike_OU_patry<-fit_allo[1,2]+fit_parapatric[1,2]+fit_sympatric[1,2]
+AIC_OU_patry<-2*2-2*logLike_OU_patry
+print(AIC_OU_patry)
+
+
+############## PARALLELS vs PERPENDICULARS with PATRY
+
+#make patry a continuous variable, yes this could be more compact ...
+evodat$visual_official_cont<-as.character(evodat$visual_official)
+evodat$visual_official_cont[evodat$visual_official_cont == "allo"] <- 1
+evodat$visual_official_cont[evodat$visual_official_cont == "para"] <- 2
+evodat$visual_official_cont[evodat$visual_official_cont == "sym"] <- 3
+evodat$visual_official_cont<-as.numeric(evodat$visual_official_cont)
+
+#parallels with patry invoked at grad2, must be the wrong way to do this as it's giving same results as without grad2 specified
+evodat_parallel<-subset(evodat,evodat$migration_category=="parallel")
+e2 <- evodat_parallel$trait
+t2<-evodat_parallel$p_distance_100
+l2<-evodat_parallel$mass_avg 
+g2<-evodat_parallel$visual_official_cont ##stopped here cuz not working, rest just copied from above
+fit_par <- model.test.sisters(e2,t2,l2,g2,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+plot(t2,e2,xlim=c(0,10),ylim=c(0,1),main="no divide")
+print(fit_par) #View model parameters
+
+#for parallel confidence intervals
+parR<-bootstrap.test(e2,t2,l2, model="OU_null", parameters=c(0.0404328,1.1825905),meserr1=0, meserr2=0,breakpoint = "NULL", N = c(1000), starting=NULL) #need to fill in correct parameters
+parR$summary
+
+
+#perpendiculars
+evodat_perp<-subset(evodat,evodat$migration_category=="perpendicular")
+e3 <- evodat_perp$trait
+t3<-evodat_perp$p_distance_100
+l3<-evodat_perp$mass_avg
+fit_perp <- model.test.sisters(e3,t3,l3,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+plot(t3,e3,xlim=c(0,10),ylim=c(0,1),main="divide")
+print(fit_perp) #View model parameters
+
+#for perp confidence intervals (don't think we need to do this anymore)
+perpR<-bootstrap.test(e3,t3,l3, model="OU_null", parameters=c(0.009246617,0.239878507),meserr1=0, meserr2=0,breakpoint = "NULL", N = c(1000), starting=NULL) #need to fill in correct parameters
+perpR$summary
+
+#to calculate AIC for perp/par######################
+logLike_BM<-fit_par[1,1]+fit_perp[1,1]
+AIC_BM<-2*1-2*logLike_BM
+print(AIC_BM)
+
+logLike_OU<-fit_par[1,2]+fit_perp[1,2]
+AIC_OU<-2*2-2*logLike_OU
+print(AIC_OU)
+
+
+
 
 
 ##################################################FIGS
