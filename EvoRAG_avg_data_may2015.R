@@ -149,6 +149,8 @@ print(AIC_OU_patry)
 
 ############## PARALLELS vs PERPENDICULARS with PATRY
 
+models = c("BM_null", "BM_linear", "OU_null", "OU_linear")
+
 #make patry a continuous variable, yes this could be more compact ...
 evodat$visual_official_cont<-as.character(evodat$visual_official)
 evodat$visual_official_cont[evodat$visual_official_cont == "allo"] <- 1
@@ -156,40 +158,32 @@ evodat$visual_official_cont[evodat$visual_official_cont == "para"] <- 2
 evodat$visual_official_cont[evodat$visual_official_cont == "sym"] <- 3
 evodat$visual_official_cont<-as.numeric(evodat$visual_official_cont)
 
-#parallels with patry invoked at grad2, must be the wrong way to do this as it's giving same results as without grad2 specified
+#parallels with patry invoked as first linear variable (so instead of the filler of mass) ## HALEY, I'm not sure if this is right, what do you think?
 evodat_parallel<-subset(evodat,evodat$migration_category=="parallel")
 e2 <- evodat_parallel$trait
 t2<-evodat_parallel$p_distance_100
-l2<-evodat_parallel$mass_avg 
-g2<-evodat_parallel$visual_official_cont ##stopped here cuz not working, rest just copied from above
-fit_par <- model.test.sisters(e2,t2,l2,g2,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+#l2<-evodat_parallel$mass_avg 
+g2<-evodat_parallel$visual_official_cont
+fit_par <- model.test.sisters(e2,t2,g2,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
 plot(t2,e2,xlim=c(0,10),ylim=c(0,1),main="no divide")
 print(fit_par) #View model parameters
-
-#for parallel confidence intervals
-parR<-bootstrap.test(e2,t2,l2, model="OU_null", parameters=c(0.0404328,1.1825905),meserr1=0, meserr2=0,breakpoint = "NULL", N = c(1000), starting=NULL) #need to fill in correct parameters
-parR$summary
-
 
 #perpendiculars
 evodat_perp<-subset(evodat,evodat$migration_category=="perpendicular")
 e3 <- evodat_perp$trait
 t3<-evodat_perp$p_distance_100
-l3<-evodat_perp$mass_avg
-fit_perp <- model.test.sisters(e3,t3,l3,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+#l3<-evodat_perp$mass_avg
+g3<-evodat_perp$visual_official_cont
+fit_perp <- model.test.sisters(e3,t3,g3,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
 plot(t3,e3,xlim=c(0,10),ylim=c(0,1),main="divide")
 print(fit_perp) #View model parameters
 
-#for perp confidence intervals (don't think we need to do this anymore)
-perpR<-bootstrap.test(e3,t3,l3, model="OU_null", parameters=c(0.009246617,0.239878507),meserr1=0, meserr2=0,breakpoint = "NULL", N = c(1000), starting=NULL) #need to fill in correct parameters
-perpR$summary
-
 #to calculate AIC for perp/par######################
-logLike_BM<-fit_par[1,1]+fit_perp[1,1]
+logLike_BM<-fit_par[1,2]+fit_perp[1,2] ## HALEY, I have no idea if this formula is correct, please check
 AIC_BM<-2*1-2*logLike_BM
 print(AIC_BM)
 
-logLike_OU<-fit_par[1,2]+fit_perp[1,2]
+logLike_OU<-fit_par[1,4]+fit_perp[1,4]
 AIC_OU<-2*2-2*logLike_OU
 print(AIC_OU)
 
