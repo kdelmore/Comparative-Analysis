@@ -2,7 +2,7 @@ evodat<-read.csv(file.choose(), stringsAsFactors = FALSE,strip.white = TRUE, na.
 library(EvoRAG) #use EvoRAG 2
 
 models<-c("BM_null","OU_null") # set models
-
+#testing
 #transforming original variables
 evodat["max_div10"]<-evodat$max/10
 evodat["tot_div100"]<-evodat$total/100
