@@ -52,11 +52,6 @@ fit_par <- model.test.sisters(e2,t2,l2,GRAD2=NULL,meserr1=0,meserr2=0,models,sta
 plot(t2,e2,xlim=c(0,10),ylim=c(0,1),main="no divide")
 print(fit_par) #View model parameters
 
-#for parallel confidence intervals
-parR<-bootstrap.test(e2,t2,l2, model="OU_null", parameters=c(0.0404328,1.1825905),meserr1=0, meserr2=0,breakpoint = "NULL", N = c(1000), starting=NULL) #need to fill in correct parameters
-parR$summary
-
-
 #perpendiculars
 evodat_perp<-subset(evodat,evodat$migration_category=="perpendicular")
 e3 <- evodat_perp$trait
@@ -65,10 +60,6 @@ l3<-evodat_perp$mass_avg
 fit_perp <- model.test.sisters(e3,t3,l3,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
 plot(t3,e3,xlim=c(0,10),ylim=c(0,1),main="divide")
 print(fit_perp) #View model parameters
-
-#for perp confidence intervals (don't think we need to do this anymore)
-perpR<-bootstrap.test(e3,t3,l3, model="OU_null", parameters=c(0.009246617,0.239878507),meserr1=0, meserr2=0,breakpoint = "NULL", N = c(1000), starting=NULL) #need to fill in correct parameters
-perpR$summary
 
 #to calculate AIC for perp/par######################
 logLike_BM<-fit_par[1,1]+fit_perp[1,1]
@@ -138,11 +129,11 @@ plot(t5,e5,xlim=c(0,10),ylim=c(0,1),main="parapatric")
 print(fit_parapatric) #View model parameters
 
 #to calculate AIC for patry###################### need to double-check these formulas
-logLike_BM_patry<-fit_allo[1,1]+fit_parapatric[1,1]+fit_sympatric[1,1]
+logLike_BM_patry<-fit_allo[1,1]+fit_parapatric[1,1]
 AIC_BM_patry<-2*1-2*logLike_BM_patry
 print(AIC_BM_patry)
 
-logLike_OU_patry<-fit_allo[1,2]+fit_parapatric[1,2]+fit_sympatric[1,2]
+logLike_OU_patry<-fit_allo[1,2]+fit_parapatric[1,2]
 AIC_OU_patry<-2*2-2*logLike_OU_patry
 print(AIC_OU_patry)
 
@@ -152,6 +143,7 @@ print(AIC_OU_patry)
 models = c("BM_null", "BM_linear", "OU_null", "OU_linear")
 
 #make patry a continuous variable, yes this could be more compact ...
+#note that the program will not take patry as an ordinal variable
 evodat$visual_official_cont<-as.character(evodat$visual_official)
 evodat$visual_official_cont[evodat$visual_official_cont == "allo"] <- 1
 evodat$visual_official_cont[evodat$visual_official_cont == "para"] <- 2
@@ -166,7 +158,7 @@ t2<-evodat_parallel$p_distance_100
 g2<-evodat_parallel$visual_official_cont
 fit_par <- model.test.sisters(e2,t2,g2,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
 plot(t2,e2,xlim=c(0,10),ylim=c(0,1),main="no divide")
-print(fit_par) #View model parameters
+print(fit_par) #View model parameters ## HALEY, DO YOU THINK I TAKE THE SLOPE VALUES HERE?
 
 #perpendiculars
 evodat_perp<-subset(evodat,evodat$migration_category=="perpendicular")
