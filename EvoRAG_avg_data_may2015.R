@@ -1,8 +1,8 @@
 #evodat<-read.csv(file.choose(), stringsAsFactors = FALSE,strip.white = TRUE, na.strings = c("NA","") ) #pair_hedges_avg_feb3
-setwd("C:/Users/Kira Delmore/Dropbox/Haley and Kira's Comparative Analysis Extravaganza/Analysis")
-evodat<-read.csv("../working files/pair_hedges_avg_feb3.csv",stringsAsFactors = FALSE,strip.white = TRUE, na.strings = c("NA",""))
-
 library(EvoRAG) #use EvoRAG 2
+setwd("C:/Users/Kira Delmore/Dropbox/Haley and Kira's Comparative Analysis Extravaganza/Analysis")
+
+evodat<-read.csv("../working files/pair_hedges_avg_feb3.csv",stringsAsFactors = FALSE,strip.white = TRUE, na.strings = c("NA",""))
 
 models<-c("BM_null","OU_null") # set models
 
@@ -26,7 +26,9 @@ evodat["avg_all10"]<-evodat$avg_2/10
 
 
 ##### set trait for all analyses
-evodat["trait"]<-evodat$avg_all10 #re-set this for each variable being analyzed
+#evodat["trait"]<-evodat$avg_all10 #re-set this for each variable being analyzed
+#evodat["trait"]<-evodat$avg_song10
+evodat["trait"]<-evodat$avg_morph10
 
 ############## ALL TOGETHER (no separate rates)
 e1<-evodat$trait
@@ -36,10 +38,8 @@ fit_all<-model.test.sisters(e1,t1,l1,GRAD2=NULL,meserr1=0,meserr2=0,models,start
 
 plot(t1,e1,xlim=c(0,10),ylim=c(0,1),main="all")
 
-par(new = TRUE) # to plot multiple plots on top of one another
+#par(new = TRUE) # to plot multiple plots on top of one another
 print(fit_all) # I've just been pasting output variables manually into the spreadsheet instead of exporting all thisdata (so inelegant...)
-
-## HALEY - how do we get the AICs for these models?
 
 ############## PARALLELS vs PERPENDICULARS
 
@@ -111,31 +111,31 @@ print(AIC_OU_patry)
 
 #####################################PATRY with just allo or not
 #allopatric
-evodat_allo<-subset(evodat,evodat$visual_official_3=="no")
-e4 <- evodat_allo$trait
-t4<-evodat_allo$p_distance_100
-l4<-evodat_allo$mass_avg
-fit_allo <- model.test.sisters(e4,t4,l4,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
-plot(t4,e4,xlim=c(0,10),ylim=c(0,1),main="allo")
-print(fit_allo) #View model parameters
+evodat_no<-subset(evodat,evodat$visual_official_3=="no")
+e7 <- evodat_no$trait
+t7<-evodat_no$p_distance_100
+l7<-evodat_no$mass_avg
+fit_no <- model.test.sisters(e7,t7,l7,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+plot(t7,e7,xlim=c(0,10),ylim=c(0,1),main="allo")
+print(fit_no) #View model parameters
 
 #not allopatric
-evodat_parapatric<-subset(evodat,evodat$visual_official_3=="flow")
-e5 <- evodat_parapatric$trait
-t5<-evodat_parapatric$p_distance_100
-l5<-evodat_parapatric$mass_avg
-fit_parapatric <- model.test.sisters(e5,t5,l5,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
-plot(t5,e5,xlim=c(0,10),ylim=c(0,1),main="parapatric")
-print(fit_parapatric) #View model parameters
+evodat_flow<-subset(evodat,evodat$visual_official_3=="flow")
+e8 <- evodat_flow$trait
+t8<-evodat_flow$p_distance_100
+l8<-evodat_flow$mass_avg
+fit_flow <- model.test.sisters(e8,t8,l8,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+plot(t8,e8,xlim=c(0,10),ylim=c(0,1),main="parapatric")
+print(fit_flow) #View model parameters
 
 #to calculate AIC for patry###################### need to double-check these formulas
-logLike_BM_patry<-fit_allo[1,1]+fit_parapatric[1,1]
-AIC_BM_patry<-2*1-2*logLike_BM_patry
-print(AIC_BM_patry)
+logLike_BM_patry2<-fit_no[1,1]+fit_flow[1,1]
+AIC_BM_patry2<-2*1-2*logLike_BM_patry2
+print(AIC_BM_patry2)
 
-logLike_OU_patry<-fit_allo[1,2]+fit_parapatric[1,2]
-AIC_OU_patry<-2*2-2*logLike_OU_patry
-print(AIC_OU_patry)
+logLike_OU_patry2<-fit_no[1,2]+fit_flow[1,2]
+AIC_OU_patry2<-2*2-2*logLike_OU_patry2
+print(AIC_OU_patry2)
 
 
 ############## PARALLELS vs PERPENDICULARS with PATRY
@@ -151,31 +151,31 @@ evodat$visual_official_cont[evodat$visual_official_cont == "sym"] <- 3
 evodat$visual_official_cont<-as.numeric(evodat$visual_official_cont)
 
 #parallels with patry invoked as first linear variable (so instead of the filler of mass) ## HALEY, I'm not sure if this is right, what do you think?
-evodat_parallel<-subset(evodat,evodat$migration_category=="parallel")
-e2 <- evodat_parallel$trait
-t2<-evodat_parallel$p_distance_100
+evodat_parallel_patry<-subset(evodat,evodat$migration_category=="parallel")
+e9 <- evodat_parallel_patry$trait
+t9<-evodat_parallel_patry$p_distance_100
 #l2<-evodat_parallel$mass_avg 
-g2<-evodat_parallel$visual_official_cont
-fit_par <- model.test.sisters(e2,t2,g2,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
-plot(t2,e2,xlim=c(0,10),ylim=c(0,1),main="no divide")
-print(fit_par) #View model parameters ## HALEY, DO YOU THINK I TAKE THE SLOPE VALUES HERE?
+g9<-evodat_parallel_patry$visual_official_cont
+fit_par_patry <- model.test.sisters(e9,t9,g9,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+plot(t9,e9,xlim=c(0,10),ylim=c(0,1),main="no divide")
+print(fit_par_patry) #View model parameters
 
 #perpendiculars
-evodat_perp<-subset(evodat,evodat$migration_category=="perpendicular")
-e3 <- evodat_perp$trait
-t3<-evodat_perp$p_distance_100
+evodat_perp_patry<-subset(evodat,evodat$migration_category=="perpendicular")
+e10 <- evodat_perp_patry$trait
+t10 <-evodat_perp_patry$p_distance_100
 #l3<-evodat_perp$mass_avg
-g3<-evodat_perp$visual_official_cont
-fit_perp <- model.test.sisters(e3,t3,g3,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
-plot(t3,e3,xlim=c(0,10),ylim=c(0,1),main="divide")
-print(fit_perp) #View model parameters
+g10 <-evodat_perp_patry$visual_official_cont
+fit_perp_patry <- model.test.sisters(e10,t10,g10,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+plot(t10,e10,xlim=c(0,10),ylim=c(0,1),main="divide")
+print(fit_perp_patry) #View model parameters
 
 #to calculate AIC for perp/par######################
-logLike_BM<-fit_par[1,2]+fit_perp[1,2] ## HALEY, I have no idea if this formula is correct, please check
+logLike_BM<-fit_par_patry[1,2]+fit_perp_patry[1,2] ## HALEY, I have no idea if this formula is correct, please check
 AIC_BM<-2*1-2*logLike_BM
 print(AIC_BM)
 
-logLike_OU<-fit_par[1,4]+fit_perp[1,4]
+logLike_OU<-fit_par_patry[1,4]+fit_perp_patry[1,4]
 AIC_OU<-2*2-2*logLike_OU
 print(AIC_OU)
 
