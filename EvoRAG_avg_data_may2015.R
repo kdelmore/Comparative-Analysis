@@ -160,7 +160,7 @@ fit_par_patry <- model.test.sisters(e9,t9,g9,GRAD2=NULL,meserr1=0,meserr2=0,mode
 plot(t9,e9,xlim=c(0,10),ylim=c(0,1),main="no divide")
 print(fit_par_patry) #View model parameters
 
-#ci for parallels
+#ci for parallels (HALEY - CIs for both para and perp start at 0.00001, do you know if it go negative or is this as low as it goes, suggesting we don't have much power to estimate this parameter)
 intercept_beta_par<-as.numeric(fit_par_patry[5,4])
 slope_beta_par<-as.numeric(fit_par_patry[6,4])
 intercept_alpha_par<-as.numeric(fit_par_patry[11,4])
@@ -223,7 +223,7 @@ lines(ETpar,col="black")
 par(new = TRUE)
 lines(ETperp,col="red")
 
-##plotting avg_2 using values from OU_linear (lines seem low relative to data points)
+##plotting avg_2 using values from OU_linear (HALEY - lines seem low relative to data points)
 par_b_OU<-0.03849
 par_a_OU<-1.422
 ETpar<-expectation.time(par_b_OU,par_a_OU,time.span=c(0,10))
@@ -240,7 +240,7 @@ lines(ETpar,col="black")
 par(new = TRUE)
 lines(ETperp,col="red")
 
-##plotting avg_2 using values from OU_linear_beta (lines seem even lower relative to data points)
+##plotting avg_2 using values from OU_linear_beta (HALEY - lines seem even lower relative to data points)
 par_b_OU<-0.0324
 par_a_OU<-1.259
 ETpar<-expectation.time(par_b_OU,par_a_OU,time.span=c(0,10))
@@ -255,7 +255,7 @@ lines(ETpar,col="black")
 par(new = TRUE)
 lines(ETperp,col="red")
 
-## trying to plot gradient using values from OU_linear, looks better if quantile=FALSE
+## trying to plot gradient using values from OU_linear, HALEY - looks better if quantile=FALSE but not 100% sure if this is right, think it might be though, think the quantiles are for when you have two vars PLUS a gradient)
 ETpargrad <- expectation.gradient(gradient.span = c(0, 3), model = c("OU_linear"),
                                   values = FALSE, parameters_par, time=c(3),quantile=FALSE)
 ETperpgrad <- expectation.gradient(gradient.span = c(0, 3), model = c("OU_linear"),
