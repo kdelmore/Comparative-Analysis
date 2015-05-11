@@ -7,7 +7,7 @@ evodat<-read.csv("../working files/pair_hedges_avg_feb3.csv",stringsAsFactors = 
 
 models = c("BM_null", "OU_null")
            
-# # transforming original variables
+# ## transforming original variables
 # evodat["max_div10"]<-evodat$max/10
 # evodat["tot_div100"]<-evodat$total/100
 # evodat["p_distance_100"]<-evodat$p_distance*100
@@ -18,14 +18,14 @@ models = c("BM_null", "OU_null")
 # evodat["max_morph10"]<-evodat$max_morph/10
 # evodat["tot_morph10"]<-evodat$total_morph/10
 
-# transforming avg variables
+## transforming avg variables
 evodat["p_distance_100"]<-evodat$p_distance*100
 evodat["avg_song10"]<-evodat$avg_song/10
 evodat["avg_morph10"]<-evodat$avg_morph/10
 evodat["avg_colour10"]<-evodat$avg_colour/10
 evodat["avg_all10"]<-evodat$avg_2/10
 
-##### set trait for all analyses
+## set trait for all analyses
 evodat["trait"]<-evodat$avg_all10 #re-set this for each variable being analyzed
 #evodat["trait"]<-evodat$avg_song10
 #evodat["trait"]<-evodat$avg_colour10
