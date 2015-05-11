@@ -28,7 +28,8 @@ evodat["avg_all10"]<-evodat$avg_2/10
 ##### set trait for all analyses
 #evodat["trait"]<-evodat$avg_all10 #re-set this for each variable being analyzed
 #evodat["trait"]<-evodat$avg_song10
-evodat["trait"]<-evodat$avg_morph10
+evodat["trait"]<-evodat$avg_colour10
+#evodat["trait"]<-evodat$avg_morph10
 
 ############## ALL TOGETHER (no separate rates)
 e1<-evodat$trait
@@ -140,7 +141,7 @@ print(AIC_OU_patry2)
 
 ############## PARALLELS vs PERPENDICULARS with PATRY
 
-models = c("BM_null", "BM_linear", "OU_null", "OU_linear")
+models = c("BM_null", "BM_linear", "OU_null", "OU_linear","OU_linear_beta")
 
 #make patry a continuous variable, yes this could be more compact ...
 #note that the program will not take patry as an ordinal variable
@@ -277,11 +278,120 @@ ETpar<-expectation.time(par_b_OU,par_a_OU,time.span=c(0,10))
 perp_b_OU<-0.006061431
 perp_a_OU<-0.183192865
 ETperp<-expectation.time(perp_b_OU,perp_a_OU,time.span=c(0,10))
-pdf("c:/Users/Haley/Documents/Comparative Extravaganza/Evolutionary change/averages 2 Feb 2015/figures/avg_overall_div.pdf",width=6,height=4)
+#pdf("c:/Users/Haley/Documents/Comparative Extravaganza/Evolutionary change/averages 2 Feb 2015/figures/avg_overall_div.pdf",width=6,height=4)
 plot(t1,e1,pch=c(16,1)[as.numeric(factor(evodat$migration_category))],xlab="time since divergence",ylab="Average divergence",cex.lab=1.5,cex.axis=1.2,ylim=c(0,0.5),yaxt="n")
 axis(side=2,at=c(0,0.25,0.5),labels=c("0.0","0.25","0.5"))
 par(new = TRUE)
 lines(ETpar)
 par(new = TRUE)
 lines(ETperp,lty=2)
-dev.off()
+#dev.off()
+
+
+########KDEL PLOTTING#################
+evodat$visual_official_2<-as.factor(evodat$visual_official_2)
+palette(value=c("black","black","black","red","red","red"))
+pch_lookup <- c(parallel_allo = 2, parallel_sym = 16, parallel_para = 1, perpendicular_allo = 2, perpendicular_sym = 16, perpendicular_para = 1)
+
+########avg_overall
+e1<-evodat$avg_all10
+t1<-evodat$p_distance_100 
+l1<-evodat$mass_avg
+par_b_OU<-0.0404328
+par_a_OU<-1.1825905
+ETpar<-expectation.time(par_b_OU,par_a_OU,time.span=c(0,10))
+perp_b_OU<-0.006061431
+perp_a_OU<-0.183192865
+ETperp<-expectation.time(perp_b_OU,perp_a_OU,time.span=c(0,10))
+
+plot(t1,e1,col=evodat$visual_official_2,pch=pch_lookup[as.numeric(evodat$visual_official_2)],xlab="time since divergence",ylab="overall phenotypic divergence",cex.lab=1.5,cex.axis=1.2,ylim=c(0,0.5),yaxt="n")
+axis(side=2,at=c(0,0.25,0.5),labels=c("0.0","0.25","0.5"))
+par(new = TRUE)
+lines(ETpar,col="black")
+par(new = TRUE)
+lines(ETperp,col="red")
+
+##linear
+par_b_OU<-0.03849
+par_a_OU<-1.422
+ETpar<-expectation.time(par_b_OU,par_a_OU,time.span=c(0,10))
+perp_b_OU<-0.00425
+perp_a_OU<-0.00145
+ETperp<-expectation.time(perp_b_OU,perp_a_OU,time.span=c(0,10))
+
+plot(t1,e1,col=evodat$visual_official_2,pch=pch_lookup[as.numeric(evodat$visual_official_2)],xlab="time since divergence",ylab="overall phenotypic divergence",cex.lab=1.5,cex.axis=1.2,ylim=c(0,0.5),yaxt="n")
+axis(side=2,at=c(0,0.25,0.5),labels=c("0.0","0.25","0.5"))
+par(new = TRUE)
+lines(ETpar,col="black")
+par(new = TRUE)
+lines(ETperp,col="red")
+
+##linear beta
+par_b_OU<-0.0324
+par_a_OU<-1.259
+ETpar<-expectation.time(par_b_OU,par_a_OU,time.span=c(0,10))
+perp_b_OU<-0.001451747
+perp_a_OU<-0.211810875
+ETperp<-expectation.time(perp_b_OU,perp_a_OU,time.span=c(0,10))
+
+plot(t1,e1,col=evodat$visual_official_2,pch=pch_lookup[as.numeric(evodat$visual_official_2)],xlab="time since divergence",ylab="overall phenotypic divergence",cex.lab=1.5,cex.axis=1.2,ylim=c(0,0.5),yaxt="n")
+axis(side=2,at=c(0,0.25,0.5),labels=c("0.0","0.25","0.5"))
+par(new = TRUE)
+lines(ETpar,col="black")
+par(new = TRUE)
+lines(ETperp,col="red")
+
+#########avg_song
+e1<-evodat$avg_song10
+t1<-evodat$p_distance_100 
+l1<-evodat$mass_avg
+par_b_OU<-0.02074476
+par_a_OU<-0.42367374
+ETpar<-expectation.time(par_b_OU,par_a_OU,time.span=c(0,10))
+perp_b_OU<-0.008467075
+perp_a_OU<-0.690203719
+ETperp<-expectation.time(perp_b_OU,perp_a_OU,time.span=c(0,10))
+
+plot(t1,e1,col=evodat$visual_official_2,pch=pch_lookup[as.numeric(evodat$visual_official_2)],xlab="time since divergence",ylab="song divergence",cex.lab=1.5,cex.axis=1.2,ylim=c(0,0.5),yaxt="n")
+axis(side=2,at=c(0,0.25,0.5),labels=c("0.0","0.25","0.5"))
+par(new = TRUE)
+lines(ETpar,col="black")
+par(new = TRUE)
+lines(ETperp,col="red")
+
+#####avg_colour
+e1<-evodat$avg_colour10
+t1<-evodat$p_distance_100 
+l1<-evodat$mass_avg
+par_b_OU<-0.03730289
+par_a_OU<-0.57014268
+ETpar<-expectation.time(par_b_OU,par_a_OU,time.span=c(0,10))
+perp_b_OU<-0.009246617
+perp_a_OU<-0.239878507
+ETperp<-expectation.time(perp_b_OU,perp_a_OU,time.span=c(0,10))
+
+plot(t1,e1,col=evodat$visual_official_2,pch=pch_lookup[as.numeric(evodat$visual_official_2)],xlab="time since divergence",ylab="colour divergence",cex.lab=1.5,cex.axis=1.2,ylim=c(0,0.75),yaxt="n")
+axis(side=2,at=c(0,0.5),labels=c("0.0","0.5"))
+par(new = TRUE)
+lines(ETpar,col="black")
+par(new = TRUE)
+lines(ETperp,col="red")
+
+#####avg_morph
+e1<-evodat$avg_morph10
+t1<-evodat$p_distance_100 
+l1<-evodat$mass_avg
+par_b_OU<-0.1445323
+par_a_OU<-6.4260147
+ETpar<-expectation.time(par_b_OU,par_a_OU,time.span=c(0,10))
+perp_b_OU<-0.005943889
+perp_a_OU<-0.017960849
+ETperp<-expectation.time(perp_b_OU,perp_a_OU,time.span=c(0,10))
+
+plot(t1,e1,col=evodat$visual_official_2,pch=pch_lookup[as.numeric(evodat$visual_official_2)],xlab="time since divergence",ylab="morphological divergence",cex.lab=1.5,cex.axis=1.2,ylim=c(0,1),yaxt="n")
+axis(side=2,at=c(0,0.5,1),labels=c("0.0","0.5","1.0"))
+par(new = TRUE)
+lines(ETpar,col="black")
+par(new = TRUE)
+lines(ETperp,col="red")
+
