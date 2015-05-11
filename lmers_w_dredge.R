@@ -22,9 +22,9 @@ comp$sp1_genus<-as.factor(comp$sp1_genus)
 comp$migration_category<-as.factor(comp$migration_category)
 comp$visual_official<-as.factor(comp$visual_official)
 comp$visual_official_ordered<-ordered(comp$visual_official)
-comp$visual_official_2<-as.factor(comp$visual_official_2)
-comp$allo_sym<-as.factor(comp$allo_sym)
-comp$allo_sym_para_perp<-as.factor(comp$allo_sym_para_perp)
+#comp$visual_official_2<-as.factor(comp$visual_official_2)
+#comp$allo_sym<-as.factor(comp$allo_sym)
+#comp$allo_sym_para_perp<-as.factor(comp$allo_sym_para_perp)
 
 #### combined, visual then overlap
 
