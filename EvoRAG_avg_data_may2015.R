@@ -1,50 +1,48 @@
-#evodat<-read.csv(file.choose(), stringsAsFactors = FALSE,strip.white = TRUE, na.strings = c("NA","") ) #pair_hedges_avg_feb3
+############## LOAD LIBRARIES, DATA AND PREP
+
 library(EvoRAG) #use EvoRAG 2
 setwd("C:/Users/Kira Delmore/Dropbox/Haley and Kira's Comparative Analysis Extravaganza/Analysis")
-
 evodat<-read.csv("../working files/pair_hedges_avg_feb3.csv",stringsAsFactors = FALSE,strip.white = TRUE, na.strings = c("NA",""))
+#evodat<-read.csv(file.choose(), stringsAsFactors = FALSE,strip.white = TRUE, na.strings = c("NA","") ) #pair_hedges_avg_feb3
 
-models<-c("BM_null","OU_null") # set models
+models = c("BM_null", "OU_null")
+           
+# # transforming original variables
+# evodat["max_div10"]<-evodat$max/10
+# evodat["tot_div100"]<-evodat$total/100
+# evodat["p_distance_100"]<-evodat$p_distance*100
+# evodat["max_song10"]<-evodat$max_song/10
+# evodat["tot_song10"]<-evodat$total_song/10
+# evodat["max_colour10"]<-evodat$max_colour/10
+# evodat["tot_colour10"]<-evodat$total_colour/10
+# evodat["max_morph10"]<-evodat$max_morph/10
+# evodat["tot_morph10"]<-evodat$total_morph/10
 
-#transforming original variables
-evodat["max_div10"]<-evodat$max/10
-evodat["tot_div100"]<-evodat$total/100
-evodat["p_distance_100"]<-evodat$p_distance*100
-evodat["max_song10"]<-evodat$max_song/10
-evodat["tot_song10"]<-evodat$total_song/10
-evodat["max_colour10"]<-evodat$max_colour/10
-evodat["tot_colour10"]<-evodat$total_colour/10
-evodat["max_morph10"]<-evodat$max_morph/10
-evodat["tot_morph10"]<-evodat$total_morph/10
-
-#transforming avg variables
+# transforming avg variables
 evodat["p_distance_100"]<-evodat$p_distance*100
 evodat["avg_song10"]<-evodat$avg_song/10
 evodat["avg_morph10"]<-evodat$avg_morph/10
 evodat["avg_colour10"]<-evodat$avg_colour/10
 evodat["avg_all10"]<-evodat$avg_2/10
 
-
 ##### set trait for all analyses
-#evodat["trait"]<-evodat$avg_all10 #re-set this for each variable being analyzed
+evodat["trait"]<-evodat$avg_all10 #re-set this for each variable being analyzed
 #evodat["trait"]<-evodat$avg_song10
-evodat["trait"]<-evodat$avg_colour10
+#evodat["trait"]<-evodat$avg_colour10
 #evodat["trait"]<-evodat$avg_morph10
 
-############## ALL TOGETHER (no separate rates)
+############## RUN MODEL ALLOWING NO SEPARATE RATES
 e1<-evodat$trait
 t1<-evodat$p_distance_100
 l1<-evodat$mass_avg #dummy
 fit_all<-model.test.sisters(e1,t1,l1,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL) #model for all pairs
 
 plot(t1,e1,xlim=c(0,10),ylim=c(0,1),main="all")
+print(fit_all)
 
-#par(new = TRUE) # to plot multiple plots on top of one another
-print(fit_all) # I've just been pasting output variables manually into the spreadsheet instead of exporting all thisdata (so inelegant...)
+############## RUN MODEL WITH SEPARATE RATES FOR PARALLELS AND PERPENDICULARS
 
-############## PARALLELS vs PERPENDICULARS
-
-#parallels
+## parallels
 evodat_parallel<-subset(evodat,evodat$migration_category=="parallel")
 e2 <- evodat_parallel$trait
 t2<-evodat_parallel$p_distance_100
@@ -53,7 +51,7 @@ fit_par <- model.test.sisters(e2,t2,l2,GRAD2=NULL,meserr1=0,meserr2=0,models,sta
 plot(t2,e2,xlim=c(0,10),ylim=c(0,1),main="no divide")
 print(fit_par) #View model parameters
 
-#perpendiculars
+## perpendiculars
 evodat_perp<-subset(evodat,evodat$migration_category=="perpendicular")
 e3 <- evodat_perp$trait
 t3<-evodat_perp$p_distance_100
@@ -62,7 +60,7 @@ fit_perp <- model.test.sisters(e3,t3,l3,GRAD2=NULL,meserr1=0,meserr2=0,models,st
 plot(t3,e3,xlim=c(0,10),ylim=c(0,1),main="divide")
 print(fit_perp) #View model parameters
 
-#to calculate AIC for perp/par######################
+## calculate AIC for perp/par
 logLike_BM<-fit_par[1,1]+fit_perp[1,1]
 AIC_BM<-2*1-2*logLike_BM
 print(AIC_BM)
@@ -72,8 +70,9 @@ AIC_OU<-2*2-2*logLike_OU
 print(AIC_OU)
 
 
-#####################################PATRY
-#allopatric
+############## RUN MODEL WITH SEPARATE RATES FOR ALLO, PARA AND SYM
+
+## allopatric
 evodat_allo<-subset(evodat,evodat$visual_official=="allo")
 e4 <- evodat_allo$trait
 t4<-evodat_allo$p_distance_100
@@ -82,7 +81,7 @@ fit_allo <- model.test.sisters(e4,t4,l4,GRAD2=NULL,meserr1=0,meserr2=0,models,st
 plot(t4,e4,xlim=c(0,10),ylim=c(0,1),main="allo")
 print(fit_allo) #View model parameters
 
-#parapatric
+## parapatric
 evodat_parapatric<-subset(evodat,evodat$visual_official=="para")
 e5 <- evodat_parapatric$trait
 t5<-evodat_parapatric$p_distance_100
@@ -91,7 +90,7 @@ fit_parapatric <- model.test.sisters(e5,t5,l5,GRAD2=NULL,meserr1=0,meserr2=0,mod
 plot(t5,e5,xlim=c(0,10),ylim=c(0,1),main="parapatric")
 print(fit_parapatric) #View model parameters
 
-#sympatric
+## sympatric
 evodat_sympatric<-subset(evodat,evodat$visual_official=="sym")
 e6 <- evodat_sympatric$trait
 t6<-evodat_sympatric$p_distance_100
@@ -100,7 +99,7 @@ fit_sympatric <- model.test.sisters(e6,t6,l6,GRAD2=NULL,meserr1=0,meserr2=0,mode
 plot(t6,e6,xlim=c(0,10),ylim=c(0,1),main="sympatric")
 print(fit_sympatric) #View model parameters
 
-#to calculate AIC for patry###################### need to double-check these formulas
+## calculate AIC for patry
 logLike_BM_patry<-fit_allo[1,1]+fit_parapatric[1,1]+fit_sympatric[1,1]
 AIC_BM_patry<-2*1-2*logLike_BM_patry
 print(AIC_BM_patry)
@@ -110,8 +109,9 @@ AIC_OU_patry<-2*2-2*logLike_OU_patry
 print(AIC_OU_patry)
 
 
-#####################################PATRY with just allo or not
-#allopatric
+############## RUN MODEL WITH SEPARATE RATES FOR ALLO vs PARA/SYM (i.e. no gene flow, at least some gene flow)
+
+## allopatric
 evodat_no<-subset(evodat,evodat$visual_official_3=="no")
 e7 <- evodat_no$trait
 t7<-evodat_no$p_distance_100
@@ -120,7 +120,7 @@ fit_no <- model.test.sisters(e7,t7,l7,GRAD2=NULL,meserr1=0,meserr2=0,models,star
 plot(t7,e7,xlim=c(0,10),ylim=c(0,1),main="allo")
 print(fit_no) #View model parameters
 
-#not allopatric
+## not allopatric
 evodat_flow<-subset(evodat,evodat$visual_official_3=="flow")
 e8 <- evodat_flow$trait
 t8<-evodat_flow$p_distance_100
@@ -129,7 +129,7 @@ fit_flow <- model.test.sisters(e8,t8,l8,GRAD2=NULL,meserr1=0,meserr2=0,models,st
 plot(t8,e8,xlim=c(0,10),ylim=c(0,1),main="parapatric")
 print(fit_flow) #View model parameters
 
-#to calculate AIC for patry###################### need to double-check these formulas
+## calculate AIC for patry
 logLike_BM_patry2<-fit_no[1,1]+fit_flow[1,1]
 AIC_BM_patry2<-2*1-2*logLike_BM_patry2
 print(AIC_BM_patry2)
@@ -139,11 +139,10 @@ AIC_OU_patry2<-2*2-2*logLike_OU_patry2
 print(AIC_OU_patry2)
 
 
-############## PARALLELS vs PERPENDICULARS with PATRY
+############## RUN MODEL WITH SEPARATE RATES FOR PARALLELS AND PERPENDICULARS AND INCLUDING PATRY AS CONT VARIABLE
+models = c("BM_null", "BM_linear", "OU_null", "OU_linear","OU_linear_beta") ##there's a note in Lawson and Weir about how changes in alpha are not reliable or something, why he has linear_beta model
 
-models = c("BM_null", "BM_linear", "OU_null", "OU_linear","OU_linear_beta")
-
-#make patry a continuous variable, yes this could be more compact ...
+## make patry a continuous variable, yes this could be more compact ...
 #note that the program will not take patry as an ordinal variable
 evodat$visual_official_cont<-as.character(evodat$visual_official)
 evodat$visual_official_cont[evodat$visual_official_cont == "allo"] <- 1
@@ -151,7 +150,7 @@ evodat$visual_official_cont[evodat$visual_official_cont == "para"] <- 2
 evodat$visual_official_cont[evodat$visual_official_cont == "sym"] <- 3
 evodat$visual_official_cont<-as.numeric(evodat$visual_official_cont)
 
-#parallels with patry invoked as first linear variable (so instead of the filler of mass) ## HALEY, I'm not sure if this is right, what do you think?
+## parallels with patry invoked as first linear variable (so instead of the filler of mass)
 evodat_parallel_patry<-subset(evodat,evodat$migration_category=="parallel")
 e9 <- evodat_parallel_patry$trait
 t9<-evodat_parallel_patry$p_distance_100
@@ -161,7 +160,17 @@ fit_par_patry <- model.test.sisters(e9,t9,g9,GRAD2=NULL,meserr1=0,meserr2=0,mode
 plot(t9,e9,xlim=c(0,10),ylim=c(0,1),main="no divide")
 print(fit_par_patry) #View model parameters
 
-#perpendiculars
+#ci for parallels
+intercept_beta_par<-as.numeric(fit_par_patry[5,4])
+slope_beta_par<-as.numeric(fit_par_patry[6,4])
+intercept_alpha_par<-as.numeric(fit_par_patry[11,4])
+slope_alpha_par<-as.numeric(fit_par_patry[12,4])
+parameters_par=c(intercept_beta_par, slope_beta_par, intercept_alpha_par, slope_alpha_par)
+set.seed(seed = 3)
+parR <- bootstrap.test(e9,t9,g9,model="OU_linear", parameters, meserr1=0, meserr2=0, breakpoint = "NULL", N = c(1000), starting=NULL)
+parR$summary
+
+## perpendiculars
 evodat_perp_patry<-subset(evodat,evodat$migration_category=="perpendicular")
 e10 <- evodat_perp_patry$trait
 t10 <-evodat_perp_patry$p_distance_100
@@ -171,8 +180,18 @@ fit_perp_patry <- model.test.sisters(e10,t10,g10,GRAD2=NULL,meserr1=0,meserr2=0,
 plot(t10,e10,xlim=c(0,10),ylim=c(0,1),main="divide")
 print(fit_perp_patry) #View model parameters
 
-#to calculate AIC for perp/par######################
-logLike_BM<-fit_par_patry[1,2]+fit_perp_patry[1,2] ## HALEY, I have no idea if this formula is correct, please check
+#ci for perpendiculars
+intercept_beta_perp<-as.numeric(fit_perp_patry[5,4])
+slope_beta_perp<-as.numeric(fit_perp_patry[6,4])
+intercept_alpha_perp<-as.numeric(fit_perp_patry[11,4])
+slope_alpha_perp<-as.numeric(fit_perp_patry[12,4])
+parameters_per=c(intercept_beta_perp, slope_beta_perp, intercept_alpha_perp, slope_alpha_perp)
+set.seed(seed = 3)
+perpR <- bootstrap.test(e10,t10,g10,model="OU_linear", parameters, meserr1=0, meserr2=0, breakpoint = "NULL", N = c(1000), starting=NULL)
+perpR$summary
+
+## calculate AIC for perp/par with patry
+logLike_BM<-fit_par_patry[1,2]+fit_perp_patry[1,2]
 AIC_BM<-2*1-2*logLike_BM
 print(AIC_BM)
 
@@ -181,8 +200,70 @@ AIC_OU<-2*2-2*logLike_OU
 print(AIC_OU)
 
 
+############## PLOT MODEL WITH HIGHEST AIC
+evodat$visual_official_2<-as.factor(evodat$visual_official_2) #so we can see which pairs are allo etc
+palette(value=c("black","black","black","red","red","red")) #so perp and para are diff colours
+pch_lookup <- c(parallel_allo = 2, parallel_sym = 16, parallel_para = 1, perpendicular_allo = 2, perpendicular_sym = 16, perpendicular_para = 1) #so allo etc are different symbols
 
+##plotting avg_2 using values from OU_null
+e1<-evodat$avg_all10
+t1<-evodat$p_distance_100 
+l1<-evodat$mass_avg
+par_b_OU<-0.0404328
+par_a_OU<-1.1825905
+ETpar<-expectation.time(par_b_OU,par_a_OU,time.span=c(0,10))
+perp_b_OU<-0.006061431
+perp_a_OU<-0.183192865
+ETperp<-expectation.time(perp_b_OU,perp_a_OU,time.span=c(0,10))
 
+plot(t1,e1,col=evodat$visual_official_2,pch=pch_lookup[as.numeric(evodat$visual_official_2)],xlab="time since divergence",ylab="overall phenotypic divergence",cex.lab=1.5,cex.axis=1.2,ylim=c(0,0.5),yaxt="n")
+axis(side=2,at=c(0,0.25,0.5),labels=c("0.0","0.25","0.5"))
+par(new = TRUE)
+lines(ETpar,col="black")
+par(new = TRUE)
+lines(ETperp,col="red")
+
+##plotting avg_2 using values from OU_linear
+par_b_OU<-0.03849
+par_a_OU<-1.422
+ETpar<-expectation.time(par_b_OU,par_a_OU,time.span=c(0,10))
+perp_b_OU<-0.00425
+perp_a_OU<-0.4111053
+ETperp<-expectation.time(perp_b_OU,perp_a_OU,time.span=c(0,10))
+#ETpar<-expectation.time(intercept_beta_par,intercept_alpha_par,time.span=c(0,10))
+#ETperp<-expectation.time(intercept_beta_perp,intercept_alpha_perp,time.span=c(0,10))
+
+plot(t1,e1,col=evodat$visual_official_2,pch=pch_lookup[as.numeric(evodat$visual_official_2)],xlab="time since divergence",ylab="overall phenotypic divergence",cex.lab=1.5,cex.axis=1.2,ylim=c(0,0.5),yaxt="n")
+axis(side=2,at=c(0,0.25,0.5),labels=c("0.0","0.25","0.5"))
+par(new = TRUE)
+lines(ETpar,col="black")
+par(new = TRUE)
+lines(ETperp,col="red")
+
+##plotting avg_2 using values from OU_linear_beta
+par_b_OU<-0.0324
+par_a_OU<-1.259
+ETpar<-expectation.time(par_b_OU,par_a_OU,time.span=c(0,10))
+perp_b_OU<-0.001451747
+perp_a_OU<-0.211810875
+ETperp<-expectation.time(perp_b_OU,perp_a_OU,time.span=c(0,10))
+
+plot(t1,e1,col=evodat$visual_official_2,pch=pch_lookup[as.numeric(evodat$visual_official_2)],xlab="time since divergence",ylab="overall phenotypic divergence",cex.lab=1.5,cex.axis=1.2,ylim=c(0,0.5),yaxt="n")
+axis(side=2,at=c(0,0.25,0.5),labels=c("0.0","0.25","0.5"))
+par(new = TRUE)
+lines(ETpar,col="black")
+par(new = TRUE)
+lines(ETperp,col="red")
+
+## trying to plot gradient using values from OU_linear
+ETpargrad <- expectation.gradient(gradient.span = c(0, 3), model = c("OU_linear"),
+                                  values = FALSE, parameters_par, time=c(3),quantile=FALSE)
+ETperpgrad <- expectation.gradient(gradient.span = c(0, 3), model = c("OU_linear"),
+                                   values = FALSE, parameters_perp, time=c(3),quantile=FALSE)
+
+#################
+#################
+#################
 
 ##################################################FIGS
 
@@ -288,59 +369,7 @@ lines(ETperp,lty=2)
 #dev.off()
 
 
-########KDEL PLOTTING#################
-evodat$visual_official_2<-as.factor(evodat$visual_official_2)
-palette(value=c("black","black","black","red","red","red"))
-pch_lookup <- c(parallel_allo = 2, parallel_sym = 16, parallel_para = 1, perpendicular_allo = 2, perpendicular_sym = 16, perpendicular_para = 1)
-
-########avg_overall
-e1<-evodat$avg_all10
-t1<-evodat$p_distance_100 
-l1<-evodat$mass_avg
-par_b_OU<-0.0404328
-par_a_OU<-1.1825905
-ETpar<-expectation.time(par_b_OU,par_a_OU,time.span=c(0,10))
-perp_b_OU<-0.006061431
-perp_a_OU<-0.183192865
-ETperp<-expectation.time(perp_b_OU,perp_a_OU,time.span=c(0,10))
-
-plot(t1,e1,col=evodat$visual_official_2,pch=pch_lookup[as.numeric(evodat$visual_official_2)],xlab="time since divergence",ylab="overall phenotypic divergence",cex.lab=1.5,cex.axis=1.2,ylim=c(0,0.5),yaxt="n")
-axis(side=2,at=c(0,0.25,0.5),labels=c("0.0","0.25","0.5"))
-par(new = TRUE)
-lines(ETpar,col="black")
-par(new = TRUE)
-lines(ETperp,col="red")
-
-##linear
-par_b_OU<-0.03849
-par_a_OU<-1.422
-ETpar<-expectation.time(par_b_OU,par_a_OU,time.span=c(0,10))
-perp_b_OU<-0.00425
-perp_a_OU<-0.00145
-ETperp<-expectation.time(perp_b_OU,perp_a_OU,time.span=c(0,10))
-
-plot(t1,e1,col=evodat$visual_official_2,pch=pch_lookup[as.numeric(evodat$visual_official_2)],xlab="time since divergence",ylab="overall phenotypic divergence",cex.lab=1.5,cex.axis=1.2,ylim=c(0,0.5),yaxt="n")
-axis(side=2,at=c(0,0.25,0.5),labels=c("0.0","0.25","0.5"))
-par(new = TRUE)
-lines(ETpar,col="black")
-par(new = TRUE)
-lines(ETperp,col="red")
-
-##linear beta
-par_b_OU<-0.0324
-par_a_OU<-1.259
-ETpar<-expectation.time(par_b_OU,par_a_OU,time.span=c(0,10))
-perp_b_OU<-0.001451747
-perp_a_OU<-0.211810875
-ETperp<-expectation.time(perp_b_OU,perp_a_OU,time.span=c(0,10))
-
-plot(t1,e1,col=evodat$visual_official_2,pch=pch_lookup[as.numeric(evodat$visual_official_2)],xlab="time since divergence",ylab="overall phenotypic divergence",cex.lab=1.5,cex.axis=1.2,ylim=c(0,0.5),yaxt="n")
-axis(side=2,at=c(0,0.25,0.5),labels=c("0.0","0.25","0.5"))
-par(new = TRUE)
-lines(ETpar,col="black")
-par(new = TRUE)
-lines(ETperp,col="red")
-
+###KDEL MUCKING ABOUT
 #########avg_song
 e1<-evodat$avg_song10
 t1<-evodat$p_distance_100 
