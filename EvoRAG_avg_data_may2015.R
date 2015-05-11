@@ -223,7 +223,7 @@ lines(ETpar,col="black")
 par(new = TRUE)
 lines(ETperp,col="red")
 
-##plotting avg_2 using values from OU_linear
+##plotting avg_2 using values from OU_linear (lines seem low relative to data points)
 par_b_OU<-0.03849
 par_a_OU<-1.422
 ETpar<-expectation.time(par_b_OU,par_a_OU,time.span=c(0,10))
@@ -240,7 +240,7 @@ lines(ETpar,col="black")
 par(new = TRUE)
 lines(ETperp,col="red")
 
-##plotting avg_2 using values from OU_linear_beta
+##plotting avg_2 using values from OU_linear_beta (lines seem even lower relative to data points)
 par_b_OU<-0.0324
 par_a_OU<-1.259
 ETpar<-expectation.time(par_b_OU,par_a_OU,time.span=c(0,10))
@@ -255,7 +255,7 @@ lines(ETpar,col="black")
 par(new = TRUE)
 lines(ETperp,col="red")
 
-## trying to plot gradient using values from OU_linear
+## trying to plot gradient using values from OU_linear, looks better if quantile=FALSE
 ETpargrad <- expectation.gradient(gradient.span = c(0, 3), model = c("OU_linear"),
                                   values = FALSE, parameters_par, time=c(3),quantile=FALSE)
 ETperpgrad <- expectation.gradient(gradient.span = c(0, 3), model = c("OU_linear"),
