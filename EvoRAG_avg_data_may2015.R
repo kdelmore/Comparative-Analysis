@@ -1,7 +1,7 @@
 ############## LOAD LIBRARIES, DATA AND PREP
 
-library(EvoRAG) #use EvoRAG 2
 setwd("C:/Users/Kira Delmore/Dropbox/Haley and Kira's Comparative Analysis Extravaganza/Analysis")
+library(EvoRAG) #use EvoRAG 2
 evodat<-read.csv("../working files/pair_hedges_avg_feb3.csv",stringsAsFactors = FALSE,strip.white = TRUE, na.strings = c("NA",""))
 #evodat<-read.csv(file.choose(), stringsAsFactors = FALSE,strip.white = TRUE, na.strings = c("NA","") ) #pair_hedges_avg_feb3
 
@@ -26,8 +26,8 @@ evodat["avg_colour10"]<-evodat$avg_colour/10
 evodat["avg_all10"]<-evodat$avg_2/10
 
 ## set trait for all analyses
-evodat["trait"]<-evodat$avg_all10 #re-set this for each variable being analyzed
-#evodat["trait"]<-evodat$avg_song10
+#evodat["trait"]<-evodat$avg_all10 #re-set this for each variable being analyzed
+evodat["trait"]<-evodat$avg_song10
 #evodat["trait"]<-evodat$avg_colour10
 #evodat["trait"]<-evodat$avg_morph10
 
@@ -167,7 +167,7 @@ intercept_alpha_par<-as.numeric(fit_par_patry[11,4])
 slope_alpha_par<-as.numeric(fit_par_patry[12,4])
 parameters_par=c(intercept_beta_par, slope_beta_par, intercept_alpha_par, slope_alpha_par)
 set.seed(seed = 3)
-parR <- bootstrap.test(e9,t9,g9,model="OU_linear", parameters, meserr1=0, meserr2=0, breakpoint = "NULL", N = c(1000), starting=NULL)
+parR <- bootstrap.test(e9,t9,g9,model="OU_linear", parameters_par, meserr1=0, meserr2=0, breakpoint = "NULL", N = c(1000), starting=NULL)
 parR$summary
 
 ## perpendiculars
@@ -187,7 +187,7 @@ intercept_alpha_perp<-as.numeric(fit_perp_patry[11,4])
 slope_alpha_perp<-as.numeric(fit_perp_patry[12,4])
 parameters_per=c(intercept_beta_perp, slope_beta_perp, intercept_alpha_perp, slope_alpha_perp)
 set.seed(seed = 3)
-perpR <- bootstrap.test(e10,t10,g10,model="OU_linear", parameters, meserr1=0, meserr2=0, breakpoint = "NULL", N = c(1000), starting=NULL)
+perpR <- bootstrap.test(e10,t10,g10,model="OU_linear", parameters_perp, meserr1=0, meserr2=0, breakpoint = "NULL", N = c(1000), starting=NULL)
 perpR$summary
 
 ## calculate AIC for perp/par with patry

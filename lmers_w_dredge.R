@@ -3,6 +3,7 @@
 library(lme4) 
 library(MuMIn)
 library(nlme)
+library(visreg)
 
 setwd("C:/Users/Kira Delmore/Dropbox/Haley and Kira's Comparative Analysis Extravaganza/Analysis")
 comp <- read.csv("../working files/pair_hedges_avg_feb3.csv",stringsAsFactors = FALSE,strip.white = TRUE, na.strings = c("NA",""))
@@ -33,6 +34,10 @@ All_models_Personal.Use<-dredge(Global_Personal.Use, extra = "R^2") # all possib
 Sub_All_models_Personal.Use<-subset(All_models_Personal.Use, delta<2) # top models (less than delta AICc = 2 from 'best' model)
 Avg.Personal.Use<-model.avg(All_models_Personal.Use, subset=delta<2) # model averaging
 Avg.Personal.Use$coefTable # parameter estimates and SEs from average model
+
+#plot
+final<-lmer(avg_log ~migration_category+breed_lat_avg_log+p_distance_log+mass_avg_log + (1 | family/sp1_genus) ,data=comp,na.action = na.pass)
+visreg(final,"migration_category",xlab="migration category", line=c(lwd=2), points=list(col="black"))
 
 Global_Personal.Use<-lmer(avg_log ~migration_category+overlap_proportion_log+breed_lat_avg_log+distance_avg_log+p_distance_log+mass_avg_log + (1 | family/sp1_genus),data=comp,na.action = na.pass)
 All_models_Personal.Use<-dredge(Global_Personal.Use, extra = "R^2") # all possible combinations of fixed effects
