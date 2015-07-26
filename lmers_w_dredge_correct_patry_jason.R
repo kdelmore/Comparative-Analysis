@@ -6,7 +6,8 @@ library(nlme)
 library(visreg)
 
 setwd("C:/Users/Kira Delmore/Dropbox/Haley and Kira's Comparative Analysis Extravaganza/Analysis")
-comp <- read.csv("../working files/pair_hedges_avg_feb3.csv",stringsAsFactors = FALSE,strip.white = TRUE, na.strings = c("NA",""))
+#comp <- read.csv("../working files/pair_hedges_avg_feb3.csv",stringsAsFactors = FALSE,strip.white = TRUE, na.strings = c("NA",""))
+comp <- read.csv("../working files/pair_hedges_avg_jul24.csv",stringsAsFactors = FALSE,strip.white = TRUE, na.strings = c("NA",""))
 
 comp$overlap_proportion_log <- log(1+comp$overlap_proportion) ## log the skewed variables
 comp$breed_lat_avg_log <- log(comp$breed_lat_avg)
@@ -21,7 +22,9 @@ comp$avg_colour_log <- log(comp$avg_colour)
 comp$fam<-as.factor(comp$family) ## convert characters to factors
 comp$sp1_genus<-as.factor(comp$sp1_genus)
 comp$migration_category<-as.factor(comp$migration_category)
-comp$visual_official<-as.factor(comp$visual_official)
+#comp$visual_official<-as.factor(comp$visual_official)
+#comp$visual_official_ordered<-ordered(comp$visual_official)
+comp$visual_official<-as.factor(comp$visual_official_jason)
 comp$visual_official_ordered<-ordered(comp$visual_official)
 #comp$visual_official_2<-as.factor(comp$visual_official_2)
 #comp$allo_sym<-as.factor(comp$allo_sym)
