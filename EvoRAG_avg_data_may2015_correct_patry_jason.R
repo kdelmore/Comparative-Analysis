@@ -71,7 +71,45 @@ AIC_OU<-2*2-2*logLike_OU
 print(AIC_OU)
 
 
-############## RUN MODEL WITH SEPARATE RATES FOR ALLO, PARA AND SYM
+############## RUN MODEL WITH SEPARATE RATES FOR ALLO, PARA AND SYM (KIRA)
+
+## allopatric
+evodat_allo<-subset(evodat,evodat$visual_official=="allo")
+e4 <- evodat_allo$trait
+t4<-evodat_allo$p_distance_100
+l4<-evodat_allo$mass_avg
+fit_allo <- model.test.sisters(e4,t4,l4,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+plot(t4,e4,xlim=c(0,10),ylim=c(0,1),main="allo")
+print(fit_allo) #View model parameters
+
+## parapatric
+evodat_parapatric<-subset(evodat,evodat$visual_official=="para")
+e5 <- evodat_parapatric$trait
+t5<-evodat_parapatric$p_distance_100
+l5<-evodat_parapatric$mass_avg
+fit_parapatric <- model.test.sisters(e5,t5,l5,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+plot(t5,e5,xlim=c(0,10),ylim=c(0,1),main="parapatric")
+print(fit_parapatric) #View model parameters
+
+## sympatric
+evodat_sympatric<-subset(evodat,evodat$visual_official=="sym")
+e6 <- evodat_sympatric$trait
+t6<-evodat_sympatric$p_distance_100
+l6<-evodat_sympatric$mass_avg
+fit_sympatric <- model.test.sisters(e6,t6,l6,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+plot(t6,e6,xlim=c(0,10),ylim=c(0,1),main="sympatric")
+print(fit_sympatric) #View model parameters
+
+## calculate AIC for patry
+logLike_BM_patry<-fit_allo[1,1]+fit_parapatric[1,1]+fit_sympatric[1,1]
+AIC_BM_patry<-2*1-2*logLike_BM_patry
+print(AIC_BM_patry)
+
+logLike_OU_patry<-fit_allo[1,2]+fit_parapatric[1,2]+fit_sympatric[1,2]
+AIC_OU_patry<-2*2-2*logLike_OU_patry
+print(AIC_OU_patry)
+
+############## RUN MODEL WITH SEPARATE RATES FOR ALLO, PARA AND SYM (JASON)
 
 ## allopatric
 evodat_allo<-subset(evodat,evodat$visual_official_jason=="allo")
@@ -109,16 +147,87 @@ logLike_OU_patry<-fit_allo[1,2]+fit_parapatric[1,2]+fit_sympatric[1,2]
 AIC_OU_patry<-2*2-2*logLike_OU_patry
 print(AIC_OU_patry)
 
-#### calculate AIC for patry just allo and para
-logLike_BM_patry<-fit_allo[1,1]+fit_parapatric[1,1]
+############## RUN MODEL WITH SEPARATE RATES FOR ALLO, PARA AND SYM (CONCEED)
+
+## allopatric
+evodat_allo<-subset(evodat,evodat$visual_official_kira_jason=="allo")
+e4 <- evodat_allo$trait
+t4<-evodat_allo$p_distance_100
+l4<-evodat_allo$mass_avg
+fit_allo <- model.test.sisters(e4,t4,l4,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+plot(t4,e4,xlim=c(0,10),ylim=c(0,1),main="allo")
+print(fit_allo) #View model parameters
+
+## parapatric
+evodat_parapatric<-subset(evodat,evodat$visual_official_kira_jason=="para")
+e5 <- evodat_parapatric$trait
+t5<-evodat_parapatric$p_distance_100
+l5<-evodat_parapatric$mass_avg
+fit_parapatric <- model.test.sisters(e5,t5,l5,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+plot(t5,e5,xlim=c(0,10),ylim=c(0,1),main="parapatric")
+print(fit_parapatric) #View model parameters
+
+## sympatric
+evodat_sympatric<-subset(evodat,evodat$visual_official_kira_jason=="sym")
+e6 <- evodat_sympatric$trait
+t6<-evodat_sympatric$p_distance_100
+l6<-evodat_sympatric$mass_avg
+fit_sympatric <- model.test.sisters(e6,t6,l6,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+plot(t6,e6,xlim=c(0,10),ylim=c(0,1),main="sympatric")
+print(fit_sympatric) #View model parameters
+
+## calculate AIC for patry
+logLike_BM_patry<-fit_allo[1,1]+fit_parapatric[1,1]+fit_sympatric[1,1]
 AIC_BM_patry<-2*1-2*logLike_BM_patry
 print(AIC_BM_patry)
 
-logLike_OU_patry<-fit_allo[1,2]+fit_parapatric[1,2]
+logLike_OU_patry<-fit_allo[1,2]+fit_parapatric[1,2]+fit_sympatric[1,2]
 AIC_OU_patry<-2*2-2*logLike_OU_patry
 print(AIC_OU_patry)
 
-############## RUN MODEL WITH SEPARATE RATES FOR PARALLELS AND PERPENDICULARS AND INCLUDING PATRY AS CONT VARIABLE
+
+############## RUN MODEL WITH SEPARATE RATES FOR PARALLELS AND PERPENDICULARS AND INCLUDING PATRY AS CONT VARIABLE (KIRA)
+models = c("BM_null", "BM_linear", "OU_null", "OU_linear","OU_linear_beta") ##there's a note in Lawson and Weir about how changes in alpha are not reliable or something, why he has linear_beta model
+
+## make patry a continuous variable, yes this could be more compact ...
+#note that the program will not take patry as an ordinal variable
+evodat$visual_official_cont<-as.character(evodat$visual_official)
+evodat$visual_official_cont[evodat$visual_official_cont == "allo"] <- 1
+evodat$visual_official_cont[evodat$visual_official_cont == "para"] <- 2
+evodat$visual_official_cont[evodat$visual_official_cont == "sym"] <- 3
+evodat$visual_official_cont<-as.numeric(evodat$visual_official_cont)
+
+## parallels with patry invoked as first linear variable (so instead of the filler of mass)
+evodat_parallel_patry<-subset(evodat,evodat$migration_category=="parallel")
+e9 <- evodat_parallel_patry$trait
+t9<-evodat_parallel_patry$p_distance_100
+#l2<-evodat_parallel$mass_avg 
+g9<-evodat_parallel_patry$visual_official_cont
+fit_par_patry <- model.test.sisters(e9,t9,g9,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+plot(t9,e9,xlim=c(0,10),ylim=c(0,1),main="no divide")
+print(fit_par_patry) #View model parameters
+
+## perpendiculars
+evodat_perp_patry<-subset(evodat,evodat$migration_category=="perpendicular")
+e10 <- evodat_perp_patry$trait
+t10 <-evodat_perp_patry$p_distance_100
+#l3<-evodat_perp$mass_avg
+g10 <-evodat_perp_patry$visual_official_cont
+fit_perp_patry <- model.test.sisters(e10,t10,g10,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+plot(t10,e10,xlim=c(0,10),ylim=c(0,1),main="divide")
+print(fit_perp_patry) #View model parameters
+
+## calculate AIC for perp/par with patry
+logLike_BM<-fit_par_patry[1,2]+fit_perp_patry[1,2]
+AIC_BM<-2*1-2*logLike_BM
+print(AIC_BM)
+
+logLike_OU<-fit_par_patry[1,4]+fit_perp_patry[1,4]
+AIC_OU<-2*2-2*logLike_OU
+print(AIC_OU)
+
+
+############## RUN MODEL WITH SEPARATE RATES FOR PARALLELS AND PERPENDICULARS AND INCLUDING PATRY AS CONT VARIABLE (JASON)
 models = c("BM_null", "BM_linear", "OU_null", "OU_linear","OU_linear_beta") ##there's a note in Lawson and Weir about how changes in alpha are not reliable or something, why he has linear_beta model
 
 ## make patry a continuous variable, yes this could be more compact ...
@@ -139,15 +248,45 @@ fit_par_patry <- model.test.sisters(e9,t9,g9,GRAD2=NULL,meserr1=0,meserr2=0,mode
 plot(t9,e9,xlim=c(0,10),ylim=c(0,1),main="no divide")
 print(fit_par_patry) #View model parameters
 
-#ci for parallels (HALEY - CIs for both para and perp start at 0.00001, do you know if it go negative or is this as low as it goes, suggesting we don't have much power to estimate this parameter)
-intercept_beta_par<-as.numeric(fit_par_patry[5,4])
-slope_beta_par<-as.numeric(fit_par_patry[6,4])
-intercept_alpha_par<-as.numeric(fit_par_patry[11,4])
-slope_alpha_par<-as.numeric(fit_par_patry[12,4])
-parameters_par=c(intercept_beta_par, slope_beta_par, intercept_alpha_par, slope_alpha_par)
-set.seed(seed = 3)
-parR <- bootstrap.test(e9,t9,g9,model="OU_linear", parameters_par, meserr1=0, meserr2=0, breakpoint = "NULL", N = c(1000), starting=NULL)
-parR$summary
+## perpendiculars
+evodat_perp_patry<-subset(evodat,evodat$migration_category=="perpendicular")
+e10 <- evodat_perp_patry$trait
+t10 <-evodat_perp_patry$p_distance_100
+#l3<-evodat_perp$mass_avg
+g10 <-evodat_perp_patry$visual_official_cont
+fit_perp_patry <- model.test.sisters(e10,t10,g10,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+plot(t10,e10,xlim=c(0,10),ylim=c(0,1),main="divide")
+print(fit_perp_patry) #View model parameters
+
+## calculate AIC for perp/par with patry
+logLike_BM<-fit_par_patry[1,2]+fit_perp_patry[1,2]
+AIC_BM<-2*1-2*logLike_BM
+print(AIC_BM)
+
+logLike_OU<-fit_par_patry[1,4]+fit_perp_patry[1,4]
+AIC_OU<-2*2-2*logLike_OU
+print(AIC_OU)
+
+############## RUN MODEL WITH SEPARATE RATES FOR PARALLELS AND PERPENDICULARS AND INCLUDING PATRY AS CONT VARIABLE (CONCEED)
+models = c("BM_null", "BM_linear", "OU_null", "OU_linear","OU_linear_beta") ##there's a note in Lawson and Weir about how changes in alpha are not reliable or something, why he has linear_beta model
+
+## make patry a continuous variable, yes this could be more compact ...
+#note that the program will not take patry as an ordinal variable
+evodat$visual_official_cont<-as.character(evodat$visual_official_kira_jason)
+evodat$visual_official_cont[evodat$visual_official_cont == "allo"] <- 1
+evodat$visual_official_cont[evodat$visual_official_cont == "para"] <- 2
+evodat$visual_official_cont[evodat$visual_official_cont == "sym"] <- 3
+evodat$visual_official_cont<-as.numeric(evodat$visual_official_cont)
+
+## parallels with patry invoked as first linear variable (so instead of the filler of mass)
+evodat_parallel_patry<-subset(evodat,evodat$migration_category=="parallel")
+e9 <- evodat_parallel_patry$trait
+t9<-evodat_parallel_patry$p_distance_100
+#l2<-evodat_parallel$mass_avg 
+g9<-evodat_parallel_patry$visual_official_cont
+fit_par_patry <- model.test.sisters(e9,t9,g9,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+plot(t9,e9,xlim=c(0,10),ylim=c(0,1),main="no divide")
+print(fit_par_patry) #View model parameters
 
 ## perpendiculars
 evodat_perp_patry<-subset(evodat,evodat$migration_category=="perpendicular")
@@ -159,16 +298,6 @@ fit_perp_patry <- model.test.sisters(e10,t10,g10,GRAD2=NULL,meserr1=0,meserr2=0,
 plot(t10,e10,xlim=c(0,10),ylim=c(0,1),main="divide")
 print(fit_perp_patry) #View model parameters
 
-#ci for perpendiculars
-intercept_beta_perp<-as.numeric(fit_perp_patry[5,4])
-slope_beta_perp<-as.numeric(fit_perp_patry[6,4])
-intercept_alpha_perp<-as.numeric(fit_perp_patry[11,4])
-slope_alpha_perp<-as.numeric(fit_perp_patry[12,4])
-parameters_per=c(intercept_beta_perp, slope_beta_perp, intercept_alpha_perp, slope_alpha_perp)
-set.seed(seed = 3)
-perpR <- bootstrap.test(e10,t10,g10,model="OU_linear", parameters_perp, meserr1=0, meserr2=0, breakpoint = "NULL", N = c(1000), starting=NULL)
-perpR$summary
-
 ## calculate AIC for perp/par with patry
 logLike_BM<-fit_par_patry[1,2]+fit_perp_patry[1,2]
 AIC_BM<-2*1-2*logLike_BM
@@ -177,7 +306,6 @@ print(AIC_BM)
 logLike_OU<-fit_par_patry[1,4]+fit_perp_patry[1,4]
 AIC_OU<-2*2-2*logLike_OU
 print(AIC_OU)
-
 
 ############## RUN MODEL WITH SEPARATE RATES FOR PARALLELS AND PERPENDICULARS AND INCLUDING OVERLAP AS CONT VARIABLE
 models = c("BM_null", "BM_linear", "OU_null", "OU_linear","OU_linear_beta") ##there's a note in Lawson and Weir about how changes in alpha are not reliable or something, why he has linear_beta model
@@ -217,7 +345,7 @@ intercept_beta_perp<-as.numeric(fit_perp_patry[5,4])
 slope_beta_perp<-as.numeric(fit_perp_patry[6,4])
 intercept_alpha_perp<-as.numeric(fit_perp_patry[11,4])
 slope_alpha_perp<-as.numeric(fit_perp_patry[12,4])
-parameters_per=c(intercept_beta_perp, slope_beta_perp, intercept_alpha_perp, slope_alpha_perp)
+parameters_perp=c(intercept_beta_perp, slope_beta_perp, intercept_alpha_perp, slope_alpha_perp)
 set.seed(seed = 3)
 perpR <- bootstrap.test(e10,t10,g10,model="OU_linear", parameters_perp, meserr1=0, meserr2=0, breakpoint = "NULL", N = c(1000), starting=NULL)
 perpR$summary
