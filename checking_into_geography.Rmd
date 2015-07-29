@@ -1,0 +1,233 @@
+---
+title: "checking_into_geography"
+author: "kira_delmore"
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    keep_md: yes
+  pdf_document: default
+---
+
+Get things ready
+```{r}
+setwd("C:/Users/Kira Delmore/Dropbox/Haley and Kira's Comparative Analysis Extravaganza/Analysis")
+library(EvoRAG)
+library(car)
+evodat<-read.csv("../working files/pair_hedges_avg_jul24.csv",stringsAsFactors = FALSE,strip.white = TRUE, na.strings = c("NA",""))
+
+## transform avg variables
+evodat["p_distance_100"]<-evodat$p_distance*100
+evodat["avg_song10"]<-evodat$avg_song/10
+evodat["avg_morph10"]<-evodat$avg_morph/10
+evodat["avg_colour10"]<-evodat$avg_colour/10
+evodat["avg_all10"]<-evodat$avg_2/10
+
+## set trait for analyses
+#evodat["trait"]<-evodat$avg_all10 #re-set this for each variable being analyzed
+#evodat["trait"]<-evodat$avg_song10
+#evodat["trait"]<-evodat$avg_colour10
+evodat["trait"]<-evodat$avg_morph10
+```
+
+LIMIT DATASET TO 36 NON-SYM PAIRS AND RUN _NULL MODELS
+
+```{r}
+evodat=subset(evodat,evodat$visual_official_jason!="sym")
+models = c("BM_null", "OU_null")
+```
+
+a) Run model allowing no separate rates
+```{r}
+e1<-evodat$trait
+t1<-evodat$p_distance_100
+l1<-evodat$mass_avg #dummy
+fit_all<-model.test.sisters(e1,t1,l1,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL) #model for all pairs
+#plot(t1,e1,xlim=c(0,10),ylim=c(0,1),main="all")
+print(fit_all)
+```
+
+b) Run model allowing separate rates
+```{r}
+## parallels
+evodat_parallel<-subset(evodat,evodat$migration_category=="parallel")
+e2 <- evodat_parallel$trait
+t2<-evodat_parallel$p_distance_100
+l2<-evodat_parallel$mass_avg 
+fit_par <- model.test.sisters(e2,t2,l2,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+#plot(t2,e2,xlim=c(0,10),ylim=c(0,1),main="no divide")
+print(fit_par) #View model parameters
+
+## perpendiculars
+evodat_perp<-subset(evodat,evodat$migration_category=="perpendicular")
+e3 <- evodat_perp$trait
+t3<-evodat_perp$p_distance_100
+l3<-evodat_perp$mass_avg
+fit_perp <- model.test.sisters(e3,t3,l3,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+#plot(t3,e3,xlim=c(0,10),ylim=c(0,1),main="divide")
+print(fit_perp) #View model parameters
+
+## calculate AIC for perp/par
+logLike_BM<-fit_par[1,1]+fit_perp[1,1]
+AIC_BM<-2*1-2*logLike_BM
+print(AIC_BM)
+
+logLike_OU<-fit_par[1,2]+fit_perp[1,2]
+AIC_OU<-2*2-2*logLike_OU
+print(AIC_OU)
+```
+
+LIMIT DATASET TO 36 NON-SYM PAIRS AND RUN _LINEAR* MODELS
+
+```{r}
+evodat$migration_category<-recode(evodat$migration_category,"'perpendicular'=0;'parallel'=1")
+models = c("BM_null", "BM_linear", "OU_null", "OU_linear","OU_linear_beta")
+```
+
+a) Run model allowing no separate rates
+```{r}
+e1<-evodat$trait
+t1<-evodat$p_distance_100
+l1<-evodat$mass_avg #dummy
+fit_all<-model.test.sisters(e1,t1,l1,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL) #model for all pairs
+#plot(t1,e1,xlim=c(0,10),ylim=c(0,1),main="all")
+print(fit_all)
+```
+
+b) Run model allowing separate rates
+```{r}
+e9 <- evodat$trait
+t9<-evodat$p_distance_100
+g9<-evodat$migration_category
+fit_par_patry <- model.test.sisters(e9,t9,g9,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+#plot(t9,e9,xlim=c(0,10),ylim=c(0,1),main="no divide")
+print(fit_par_patry) #View model parameters
+```
+
+GO BACK TO FULL DATASET AND USE OVERLAP PROPORTION TO EXAMINE GEOGRAPHIES INFLUENCE
+
+```{r}
+setwd("C:/Users/Kira Delmore/Dropbox/Haley and Kira's Comparative Analysis Extravaganza/Analysis")
+evodat<-read.csv("../working files/pair_hedges_avg_jul24.csv",stringsAsFactors = FALSE,strip.white = TRUE, na.strings = c("NA",""))
+
+## transforming avg variables
+evodat["p_distance_100"]<-evodat$p_distance*100
+evodat["avg_song10"]<-evodat$avg_song/10
+evodat["avg_morph10"]<-evodat$avg_morph/10
+evodat["avg_colour10"]<-evodat$avg_colour/10
+evodat["avg_all10"]<-evodat$avg_2/10
+
+## set trait for all analyses
+#evodat["trait"]<-evodat$avg_all10 #re-set this for each variable being analyzed
+#evodat["trait"]<-evodat$avg_song10
+#evodat["trait"]<-evodat$avg_colour10
+evodat["trait"]<-evodat$avg_morph10
+```
+
+a) Run model allowing no separate rates (same as first set of models but with full dataset)
+```{r}
+models = c("BM_null", "OU_null")
+
+e1<-evodat$trait
+t1<-evodat$p_distance_100
+l1<-evodat$mass_avg #dummy
+fit_all<-model.test.sisters(e1,t1,l1,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL) #model for all pairs
+#plot(t1,e1,xlim=c(0,10),ylim=c(0,1),main="all")
+print(fit_all)
+```
+
+b) Run model allowing separate rates (again, same as first set of models but with full dataset)
+```{r}
+## parallels
+evodat_parallel<-subset(evodat,evodat$migration_category=="parallel")
+e2 <- evodat_parallel$trait
+t2<-evodat_parallel$p_distance_100
+l2<-evodat_parallel$mass_avg 
+fit_par <- model.test.sisters(e2,t2,l2,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+#plot(t2,e2,xlim=c(0,10),ylim=c(0,1),main="no divide")
+print(fit_par) #View model parameters
+
+## perpendiculars
+evodat_perp<-subset(evodat,evodat$migration_category=="perpendicular")
+e3 <- evodat_perp$trait
+t3<-evodat_perp$p_distance_100
+l3<-evodat_perp$mass_avg
+fit_perp <- model.test.sisters(e3,t3,l3,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+#plot(t3,e3,xlim=c(0,10),ylim=c(0,1),main="divide")
+print(fit_perp) #View model parameters
+
+## calculate AIC for perp/par
+logLike_BM<-fit_par[1,1]+fit_perp[1,1]
+AIC_BM<-2*1-2*logLike_BM
+print(AIC_BM)
+
+logLike_OU<-fit_par[1,2]+fit_perp[1,2]
+AIC_OU<-2*2-2*logLike_OU
+print(AIC_OU)
+```
+
+c) Run model with overlap proportion as continuous variable
+```{r}
+models = c("BM_null", "BM_linear", "OU_null", "OU_linear","OU_linear_beta")
+e9 <- evodat$trait
+t9<-evodat$p_distance_100
+g9<-evodat$overlap_proportion
+fit_par_patry <- model.test.sisters(e9,t9,g9,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+#plot(t9,e9,xlim=c(0,10),ylim=c(0,1),main="no divide")
+print(fit_par_patry) #View model parameters
+```
+
+d) Run model with separate rates for migration category AND including overlap proportion
+```{r}
+## parallels
+evodat_parallel_patry<-subset(evodat,evodat$migration_category=="parallel")
+e9 <- evodat_parallel_patry$trait
+t9<-evodat_parallel_patry$p_distance_100
+g9<-evodat_parallel_patry$overlap_proportion
+fit_par_patry <- model.test.sisters(e9,t9,g9,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+#plot(t9,e9,xlim=c(0,10),ylim=c(0,1),main="no divide")
+print(fit_par_patry) #View model parameters
+
+# ci for parallels
+# intercept_beta_par<-as.numeric(fit_par_patry[5,4])
+# slope_beta_par<-as.numeric(fit_par_patry[6,4])
+# intercept_alpha_par<-as.numeric(fit_par_patry[11,4])
+# slope_alpha_par<-as.numeric(fit_par_patry[12,4])
+# parameters_par=c(intercept_beta_par, slope_beta_par, intercept_alpha_par, slope_alpha_par)
+# set.seed(seed = 3)
+# parR <- bootstrap.test(e9,t9,g9,model="OU_linear", parameters_par, meserr1=0, meserr2=0, breakpoint = "NULL", N = c(1000), starting=NULL)
+# parR$summary
+
+## perpendiculars
+evodat_perp_patry<-subset(evodat,evodat$migration_category=="perpendicular")
+e10 <- evodat_perp_patry$trait
+t10 <-evodat_perp_patry$p_distance_100
+g10 <-evodat_perp_patry$overlap_proportion
+fit_perp_patry <- model.test.sisters(e10,t10,g10,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+#plot(t10,e10,xlim=c(0,10),ylim=c(0,1),main="divide")
+print(fit_perp_patry) #View model parameters
+
+# ci for perpendiculars
+# intercept_beta_perp<-as.numeric(fit_perp_patry[5,4])
+# slope_beta_perp<-as.numeric(fit_perp_patry[6,4])
+# intercept_alpha_perp<-as.numeric(fit_perp_patry[11,4])
+# slope_alpha_perp<-as.numeric(fit_perp_patry[12,4])
+# parameters_perp=c(intercept_beta_perp, slope_beta_perp, intercept_alpha_perp, slope_alpha_perp)
+# set.seed(seed = 3)
+# perpR <- bootstrap.test(e10,t10,g10,model="OU_linear", parameters_perp, meserr1=0, meserr2=0, breakpoint = "NULL", N = c(1000), starting=NULL)
+# perpR$summary
+
+## calculate AIC for perp/par with patry and using _linear models
+logLike_BM<-fit_par_patry[1,2]+fit_perp_patry[1,2]
+AIC_BM<-2*1-2*logLike_BM
+print(AIC_BM)
+
+logLike_OU<-fit_par_patry[1,4]+fit_perp_patry[1,4]
+AIC_OU<-2*2-2*logLike_OU
+print(AIC_OU)
+
+## calculate AIC for perp/par with patry and using _linear_beta models
+logLike_OU<-fit_par_patry[1,5]+fit_perp_patry[1,5]
+AIC_OU<-2*2-2*logLike_OU
+print(AIC_OU)
+```
+
