@@ -23,10 +23,10 @@ evodat["avg_colour10"]<-evodat$avg_colour/10
 evodat["avg_all10"]<-evodat$avg_2/10
 
 ## set trait for analyses
-#evodat["trait"]<-evodat$avg_all10 #re-set this for each variable being analyzed
+evodat["trait"]<-evodat$avg_all10 #re-set this for each variable being analyzed
 #evodat["trait"]<-evodat$avg_song10
 #evodat["trait"]<-evodat$avg_colour10
-evodat["trait"]<-evodat$avg_morph10
+#evodat["trait"]<-evodat$avg_morph10
 ```
 
 LIMIT DATASET TO 36 NON-SYM PAIRS AND RUN _NULL MODELS
@@ -117,10 +117,10 @@ evodat["avg_colour10"]<-evodat$avg_colour/10
 evodat["avg_all10"]<-evodat$avg_2/10
 
 ## set trait for all analyses
-#evodat["trait"]<-evodat$avg_all10 #re-set this for each variable being analyzed
+evodat["trait"]<-evodat$avg_all10 #re-set this for each variable being analyzed
 #evodat["trait"]<-evodat$avg_song10
 #evodat["trait"]<-evodat$avg_colour10
-evodat["trait"]<-evodat$avg_morph10
+#evodat["trait"]<-evodat$avg_morph10
 ```
 
 a) Run model allowing no separate rates (same as first set of models but with full dataset)
