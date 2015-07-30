@@ -86,6 +86,102 @@ evodat[&quot;trait&quot;]&lt;-evodat$avg_all10 #re-set this for each variable be
 #evodat[&quot;trait&quot;]&lt;-evodat$avg_song10
 #evodat[&quot;trait&quot;]&lt;-evodat$avg_colour10
 #evodat[&quot;trait&quot;]&lt;-evodat$avg_morph10</code></pre>
+<p>FULL DATASET AND _NULL MODELS</p>
+<ol style="list-style-type: lower-alpha">
+<li>Run model allowing no separate rates</li>
+</ol>
+<pre class="r"><code>models = c(&quot;BM_null&quot;, &quot;OU_null&quot;)
+e1&lt;-evodat$trait
+t1&lt;-evodat$p_distance_100
+l1&lt;-evodat$mass_avg #dummy
+fit_all&lt;-model.test.sisters(e1,t1,l1,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL) #model for all pairs
+#plot(t1,e1,xlim=c(0,10),ylim=c(0,1),main=&quot;all&quot;)
+print(fit_all)</code></pre>
+<pre><code>##                            BM_null      OU_null
+## logLik                18.491938644  23.71689259
+## n                      1.000000000   2.00000000
+## AIC                  -34.983877287 -43.43378518
+## AICc                 -34.898770904 -43.17291561
+## b1                     0.006134345   0.01752217
+## b1_slope                        NA           NA
+## breakpoint                      NA           NA
+## b2                              NA           NA
+## b2_slope                        NA           NA
+## quadratic_term                  NA           NA
+## a1                              NA   0.61845964
+## a1_slope                        NA           NA
+## a2                              NA           NA
+## a2_slope                        NA           NA
+## Quadratic_c                     NA           NA
+## Quadratic_b                     NA           NA
+## Quadratic_a                     NA           NA
+## nlm_termination_code   1.000000000   1.00000000</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Run model allowing separate rates</li>
+</ol>
+<pre class="r"><code>## parallels
+evodat_parallel&lt;-subset(evodat,evodat$migration_category==&quot;parallel&quot;)
+e2 &lt;- evodat_parallel$trait
+t2&lt;-evodat_parallel$p_distance_100
+l2&lt;-evodat_parallel$mass_avg 
+fit_par &lt;- model.test.sisters(e2,t2,l2,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+#plot(t2,e2,xlim=c(0,10),ylim=c(0,1),main=&quot;no divide&quot;)
+print(fit_par) #View model parameters</code></pre>
+<pre><code>##                           BM_null    OU_null
+## logLik                3.135422112  6.7129518
+## n                     1.000000000  2.0000000
+## AIC                  -4.270844224 -9.4259036
+## AICc                 -4.035550107 -8.6759036
+## b1                    0.009749965  0.0404328
+## b1_slope                       NA         NA
+## breakpoint                     NA         NA
+## b2                             NA         NA
+## b2_slope                       NA         NA
+## quadratic_term                 NA         NA
+## a1                             NA  1.1825905
+## a1_slope                       NA         NA
+## a2                             NA         NA
+## a2_slope                       NA         NA
+## Quadratic_c                    NA         NA
+## Quadratic_b                    NA         NA
+## Quadratic_a                    NA         NA
+## nlm_termination_code  1.000000000  1.0000000</code></pre>
+<pre class="r"><code>## perpendiculars
+evodat_perp&lt;-subset(evodat,evodat$migration_category==&quot;perpendicular&quot;)
+e3 &lt;- evodat_perp$trait
+t3&lt;-evodat_perp$p_distance_100
+l3&lt;-evodat_perp$mass_avg
+fit_perp &lt;- model.test.sisters(e3,t3,l3,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+#plot(t3,e3,xlim=c(0,10),ylim=c(0,1),main=&quot;divide&quot;)
+print(fit_perp) #View model parameters</code></pre>
+<pre><code>##                            BM_null       OU_null
+## logLik                17.963671013  18.919184256
+## n                      1.000000000   2.000000000
+## AIC                  -33.927342026 -33.838368513
+## AICc                 -33.784484883 -33.393924068
+## b1                     0.003844453   0.006061431
+## b1_slope                        NA            NA
+## breakpoint                      NA            NA
+## b2                              NA            NA
+## b2_slope                        NA            NA
+## quadratic_term                  NA            NA
+## a1                              NA   0.183192865
+## a1_slope                        NA            NA
+## a2                              NA            NA
+## a2_slope                        NA            NA
+## Quadratic_c                     NA            NA
+## Quadratic_b                     NA            NA
+## Quadratic_a                     NA            NA
+## nlm_termination_code   1.000000000   1.000000000</code></pre>
+<pre class="r"><code>## calculate AIC for perp/par
+logLike_BM&lt;-fit_par[1,1]+fit_perp[1,1]
+AIC_BM&lt;-2*1-2*logLike_BM
+print(AIC_BM)</code></pre>
+<pre><code>## [1] -40.19819</code></pre>
+<pre class="r"><code>logLike_OU&lt;-fit_par[1,2]+fit_perp[1,2]
+AIC_OU&lt;-2*2-2*logLike_OU
+print(AIC_OU)</code></pre>
+<pre><code>## [1] -47.26427</code></pre>
 <p>LIMIT DATASET TO 36 NON-SYM PAIRS AND RUN _NULL MODELS</p>
 <pre class="r"><code>evodat=subset(evodat,evodat$visual_official_jason!=&quot;sym&quot;)
 models = c(&quot;BM_null&quot;, &quot;OU_null&quot;)</code></pre>

@@ -29,6 +29,49 @@ evodat["trait"]<-evodat$avg_all10 #re-set this for each variable being analyzed
 #evodat["trait"]<-evodat$avg_morph10
 ```
 
+FULL DATASET AND _NULL MODELS
+
+a) Run model allowing no separate rates
+```{r}
+models = c("BM_null", "OU_null")
+e1<-evodat$trait
+t1<-evodat$p_distance_100
+l1<-evodat$mass_avg #dummy
+fit_all<-model.test.sisters(e1,t1,l1,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL) #model for all pairs
+#plot(t1,e1,xlim=c(0,10),ylim=c(0,1),main="all")
+print(fit_all)
+```
+
+b) Run model allowing separate rates
+```{r}
+## parallels
+evodat_parallel<-subset(evodat,evodat$migration_category=="parallel")
+e2 <- evodat_parallel$trait
+t2<-evodat_parallel$p_distance_100
+l2<-evodat_parallel$mass_avg 
+fit_par <- model.test.sisters(e2,t2,l2,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+#plot(t2,e2,xlim=c(0,10),ylim=c(0,1),main="no divide")
+print(fit_par) #View model parameters
+
+## perpendiculars
+evodat_perp<-subset(evodat,evodat$migration_category=="perpendicular")
+e3 <- evodat_perp$trait
+t3<-evodat_perp$p_distance_100
+l3<-evodat_perp$mass_avg
+fit_perp <- model.test.sisters(e3,t3,l3,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
+#plot(t3,e3,xlim=c(0,10),ylim=c(0,1),main="divide")
+print(fit_perp) #View model parameters
+
+## calculate AIC for perp/par
+logLike_BM<-fit_par[1,1]+fit_perp[1,1]
+AIC_BM<-2*1-2*logLike_BM
+print(AIC_BM)
+
+logLike_OU<-fit_par[1,2]+fit_perp[1,2]
+AIC_OU<-2*2-2*logLike_OU
+print(AIC_OU)
+```
+
 LIMIT DATASET TO 36 NON-SYM PAIRS AND RUN _NULL MODELS
 
 ```{r}
