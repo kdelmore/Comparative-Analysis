@@ -821,6 +821,22 @@ LIMIT DATASET TO 36 NON-SYM PAIRS AND RUN _NULL MODELS
 
 
 ```r
+setwd("C:/Users/Kira Delmore/Dropbox/Haley and Kira's Comparative Analysis Extravaganza/Analysis")
+evodat<-read.csv("../working files/pair_hedges_avg_jul30.csv",stringsAsFactors = FALSE,strip.white = TRUE, na.strings = c("NA",""))
+
+## transform avg variables
+evodat["p_distance_100"]<-evodat$p_distance*100
+evodat["avg_song10"]<-evodat$avg_song/10
+evodat["avg_morph10"]<-evodat$avg_morph/10
+evodat["avg_colour10"]<-evodat$avg_colour/10
+evodat["avg_all10"]<-evodat$avg_2/10
+
+## set trait for analyses
+evodat["trait"]<-evodat$avg_all10 #re-set this for each variable being analyzed
+#evodat["trait"]<-evodat$avg_song10
+#evodat["trait"]<-evodat$avg_colour10
+#evodat["trait"]<-evodat$avg_morph10
+
 evodat=subset(evodat,evodat$visual_official_jason!="sym")
 models = c("BM_null", "OU_null")
 ```
@@ -837,25 +853,25 @@ print(fit_all)
 ```
 
 ```
-##                            BM_null      OU_null
-## logLik                16.490583765  23.31514055
-## n                      1.000000000   2.00000000
-## AIC                  -30.981167531 -42.63028110
-## AICc                 -30.852135273 -42.23028110
-## b1                     0.006791993   0.05011969
-## b1_slope                        NA           NA
-## breakpoint                      NA           NA
-## b2                              NA           NA
-## b2_slope                        NA           NA
-## quadratic_term                  NA           NA
-## a1                              NA   3.34192786
-## a1_slope                        NA           NA
-## a2                              NA           NA
-## a2_slope                        NA           NA
-## Quadratic_c                     NA           NA
-## Quadratic_b                     NA           NA
-## Quadratic_a                     NA           NA
-## nlm_termination_code   1.000000000   1.00000000
+##                            BM_null     OU_null
+## logLik                17.942066875  26.1063276
+## n                      1.000000000   2.0000000
+## AIC                  -33.884133749 -48.2126552
+## AICc                 -33.766486691 -47.8490188
+## b1                     0.006298839   0.0566004
+## b1_slope                        NA          NA
+## breakpoint                      NA          NA
+## b2                              NA          NA
+## b2_slope                        NA          NA
+## quadratic_term                  NA          NA
+## a1                              NA   3.9760407
+## a1_slope                        NA          NA
+## a2                              NA          NA
+## a2_slope                        NA          NA
+## Quadratic_c                     NA          NA
+## Quadratic_b                     NA          NA
+## Quadratic_a                     NA          NA
+## nlm_termination_code   1.000000000   1.0000000
 ```
 
 b) Run model allowing separate rates
@@ -872,25 +888,25 @@ print(fit_par) #View model parameters
 ```
 
 ```
-##                      BM_null OU_null
-## logLik                 0e+00   0.000
-## n                      1e+00   2.000
-## AIC                    2e+00   4.000
-## AICc                   0e+00   0.000
-## b1                     1e-05   0.010
-## b1_slope                  NA      NA
-## breakpoint                NA      NA
-## b2                        NA      NA
-## b2_slope                  NA      NA
-## quadratic_term            NA      NA
-## a1                        NA   0.001
-## a1_slope                  NA      NA
-## a2                        NA      NA
-## a2_slope                  NA      NA
-## Quadratic_c               NA      NA
-## Quadratic_b               NA      NA
-## Quadratic_a               NA      NA
-## nlm_termination_code   1e+00   1.000
+##                          BM_null     OU_null
+## logLik                3.22849769  5.41150249
+## n                     1.00000000  2.00000000
+## AIC                  -4.45699537 -6.82300498
+## AICc                 -3.79032870 -4.42300498
+## b1                    0.01537471  0.07334116
+## b1_slope                      NA          NA
+## breakpoint                    NA          NA
+## b2                            NA          NA
+## b2_slope                      NA          NA
+## quadratic_term                NA          NA
+## a1                            NA  4.32869282
+## a1_slope                      NA          NA
+## a2                            NA          NA
+## a2_slope                      NA          NA
+## Quadratic_c                   NA          NA
+## Quadratic_b                   NA          NA
+## Quadratic_a                   NA          NA
+## nlm_termination_code  1.00000000  1.00000000
 ```
 
 ```r
@@ -905,25 +921,25 @@ print(fit_perp) #View model parameters
 ```
 
 ```
-##                      BM_null OU_null
-## logLik                 0e+00   0.000
-## n                      1e+00   2.000
-## AIC                    2e+00   4.000
-## AICc                   0e+00   0.000
-## b1                     1e-05   0.010
-## b1_slope                  NA      NA
-## breakpoint                NA      NA
-## b2                        NA      NA
-## b2_slope                  NA      NA
-## quadratic_term            NA      NA
-## a1                        NA   0.001
-## a1_slope                  NA      NA
-## a2                        NA      NA
-## a2_slope                  NA      NA
-## Quadratic_c               NA      NA
-## Quadratic_b               NA      NA
-## Quadratic_a               NA      NA
-## nlm_termination_code   1e+00   1.000
+##                            BM_null     OU_null
+## logLik                18.570910397  21.1513273
+## n                      1.000000000   2.0000000
+## AIC                  -35.141820794 -38.3026546
+## AICc                 -34.987974640 -37.8226546
+## b1                     0.003705733   0.0101522
+## b1_slope                        NA          NA
+## breakpoint                      NA          NA
+## b2                              NA          NA
+## b2_slope                        NA          NA
+## quadratic_term                  NA          NA
+## a1                              NA   0.6308815
+## a1_slope                        NA          NA
+## a2                              NA          NA
+## a2_slope                        NA          NA
+## Quadratic_c                     NA          NA
+## Quadratic_b                     NA          NA
+## Quadratic_a                     NA          NA
+## nlm_termination_code   1.000000000   1.0000000
 ```
 
 ```r
@@ -934,7 +950,7 @@ print(AIC_BM)
 ```
 
 ```
-## [1] 2
+## [1] -41.59882
 ```
 
 ```r
@@ -944,6 +960,6 @@ print(AIC_OU)
 ```
 
 ```
-## [1] 4
+## [1] -49.12566
 ```
 

@@ -82,10 +82,10 @@ evodat[&quot;avg_colour10&quot;]&lt;-evodat$avg_colour/10
 evodat[&quot;avg_all10&quot;]&lt;-evodat$avg_2/10
 
 ## set trait for analyses
-#evodat[&quot;trait&quot;]&lt;-evodat$avg_all10 #re-set this for each variable being analyzed
+evodat[&quot;trait&quot;]&lt;-evodat$avg_all10 #re-set this for each variable being analyzed
 #evodat[&quot;trait&quot;]&lt;-evodat$avg_song10
 #evodat[&quot;trait&quot;]&lt;-evodat$avg_colour10
-evodat[&quot;trait&quot;]&lt;-evodat$avg_morph10</code></pre>
+#evodat[&quot;trait&quot;]&lt;-evodat$avg_morph10</code></pre>
 <p>FULL DATASET AND USE OVERLAP PROPORTION TO EXAMINE GEOGRAPHIES INFLUENCE</p>
 <ol style="list-style-type: lower-alpha">
 <li>Run model allowing no separate rates (same as first set of models but with full dataset)</li>
@@ -99,17 +99,17 @@ fit_all&lt;-model.test.sisters(e1,t1,l1,GRAD2=NULL,meserr1=0,meserr2=0,models,st
 #plot(t1,e1,xlim=c(0,10),ylim=c(0,1),main=&quot;all&quot;)
 print(fit_all)</code></pre>
 <pre><code>##                            BM_null      OU_null
-## logLik                12.674010752  16.93935105
+## logLik                18.491938644  23.71689259
 ## n                      1.000000000   2.00000000
-## AIC                  -23.348021504 -29.87870210
-## AICc                 -23.262915121 -29.61783254
-## b1                     0.007778549   0.02132601
+## AIC                  -34.983877287 -43.43378518
+## AICc                 -34.898770904 -43.17291561
+## b1                     0.006134345   0.01752217
 ## b1_slope                        NA           NA
 ## breakpoint                      NA           NA
 ## b2                              NA           NA
 ## b2_slope                        NA           NA
 ## quadratic_term                  NA           NA
-## a1                              NA   0.55532483
+## a1                              NA   0.61845964
 ## a1_slope                        NA           NA
 ## a2                              NA           NA
 ## a2_slope                        NA           NA
@@ -128,25 +128,25 @@ l2&lt;-evodat_parallel$mass_avg
 fit_par &lt;- model.test.sisters(e2,t2,l2,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
 #plot(t2,e2,xlim=c(0,10),ylim=c(0,1),main=&quot;no divide&quot;)
 print(fit_par) #View model parameters</code></pre>
-<pre><code>##                          BM_null     OU_null
-## logLik                1.81709758   9.3430399
-## n                     1.00000000   2.0000000
-## AIC                  -1.63419515 -14.6860798
-## AICc                 -1.39890103 -13.9360798
-## b1                    0.01120135   0.1445323
-## b1_slope                      NA          NA
-## breakpoint                    NA          NA
-## b2                            NA          NA
-## b2_slope                      NA          NA
-## quadratic_term                NA          NA
-## a1                            NA   6.4260147
-## a1_slope                      NA          NA
-## a2                            NA          NA
-## a2_slope                      NA          NA
-## Quadratic_c                   NA          NA
-## Quadratic_b                   NA          NA
-## Quadratic_a                   NA          NA
-## nlm_termination_code  1.00000000   1.0000000</code></pre>
+<pre><code>##                           BM_null    OU_null
+## logLik                3.135422112  6.7129518
+## n                     1.000000000  2.0000000
+## AIC                  -4.270844224 -9.4259036
+## AICc                 -4.035550107 -8.6759036
+## b1                    0.009749965  0.0404328
+## b1_slope                       NA         NA
+## breakpoint                     NA         NA
+## b2                             NA         NA
+## b2_slope                       NA         NA
+## quadratic_term                 NA         NA
+## a1                             NA  1.1825905
+## a1_slope                       NA         NA
+## a2                             NA         NA
+## a2_slope                       NA         NA
+## Quadratic_c                    NA         NA
+## Quadratic_b                    NA         NA
+## Quadratic_a                    NA         NA
+## nlm_termination_code  1.000000000  1.0000000</code></pre>
 <pre class="r"><code>## perpendiculars
 evodat_perp&lt;-subset(evodat,evodat$migration_category==&quot;perpendicular&quot;)
 e3 &lt;- evodat_perp$trait
@@ -156,17 +156,17 @@ fit_perp &lt;- model.test.sisters(e3,t3,l3,GRAD2=NULL,meserr1=0,meserr2=0,models
 #plot(t3,e3,xlim=c(0,10),ylim=c(0,1),main=&quot;divide&quot;)
 print(fit_perp) #View model parameters</code></pre>
 <pre><code>##                            BM_null       OU_null
-## logLik                12.292816504  12.311903595
+## logLik                17.963671013  18.919184256
 ## n                      1.000000000   2.000000000
-## AIC                  -22.585633008 -20.623807190
-## AICc                 -22.442775865 -20.179362745
-## b1                     0.005610773   0.005943889
+## AIC                  -33.927342026 -33.838368513
+## AICc                 -33.784484883 -33.393924068
+## b1                     0.003844453   0.006061431
 ## b1_slope                        NA            NA
 ## breakpoint                      NA            NA
 ## b2                              NA            NA
 ## b2_slope                        NA            NA
 ## quadratic_term                  NA            NA
-## a1                              NA   0.017960849
+## a1                              NA   0.183192865
 ## a1_slope                        NA            NA
 ## a2                              NA            NA
 ## a2_slope                        NA            NA
@@ -178,11 +178,11 @@ print(fit_perp) #View model parameters</code></pre>
 logLike_BM&lt;-fit_par[1,1]+fit_perp[1,1]
 AIC_BM&lt;-2*1-2*logLike_BM
 print(AIC_BM)</code></pre>
-<pre><code>## [1] -26.21983</code></pre>
+<pre><code>## [1] -40.19819</code></pre>
 <pre class="r"><code>logLike_OU&lt;-fit_par[1,2]+fit_perp[1,2]
 AIC_OU&lt;-2*2-2*logLike_OU
 print(AIC_OU)</code></pre>
-<pre><code>## [1] -39.30989</code></pre>
+<pre><code>## [1] -47.26427</code></pre>
 <ol start="3" style="list-style-type: lower-alpha">
 <li>Run model with overlap proportion as continuous variable</li>
 </ol>
@@ -194,43 +194,43 @@ fit_par_patry &lt;- model.test.sisters(e9,t9,g9,GRAD2=NULL,meserr1=0,meserr2=0,m
 #plot(t9,e9,xlim=c(0,10),ylim=c(0,1),main=&quot;no divide&quot;)
 print(fit_par_patry) #View model parameters</code></pre>
 <pre><code>##                            BM_null     BM_linear      OU_null   OU_linear
-## logLik                12.674010752  13.044583480  16.93935105  20.2218526
+## logLik                18.491938644  18.649660891  23.71689259  26.0126523
 ## n                      1.000000000   2.000000000   2.00000000   4.0000000
-## AIC                  -23.348021504 -22.089166959 -29.87870210 -32.4437053
-## AICc                 -23.262915121 -21.828297394 -29.61783254 -31.5346144
-## b1                     0.007778549   0.008596266   0.02132601   0.7151628
-## b1_slope                        NA  -0.004556975           NA   5.3670073
+## AIC                  -34.983877287 -33.299321781 -43.43378518 -44.0253046
+## AICc                 -34.898770904 -33.038452216 -43.17291561 -43.1162137
+## b1                     0.006134345   0.006605677   0.01752217   0.0326312
+## b1_slope                        NA  -0.002581214           NA   0.3299469
 ## breakpoint                      NA            NA           NA          NA
 ## b2                              NA            NA           NA          NA
 ## b2_slope                        NA            NA           NA          NA
 ## quadratic_term                  NA            NA           NA          NA
-## a1                              NA            NA   0.55532483  48.8246687
-## a1_slope                        NA            NA           NA  20.1275392
+## a1                              NA            NA   0.61845964   2.6076273
+## a1_slope                        NA            NA           NA   4.2013542
 ## a2                              NA            NA           NA          NA
 ## a2_slope                        NA            NA           NA          NA
 ## Quadratic_c                     NA            NA           NA          NA
 ## Quadratic_b                     NA            NA           NA          NA
 ## Quadratic_a                     NA            NA           NA          NA
-## nlm_termination_code   1.000000000   2.000000000   1.00000000   1.0000000
+## nlm_termination_code   1.000000000   1.000000000   1.00000000   1.0000000
 ##                      OU_linear_beta
-## logLik                   20.1910268
-## n                         3.0000000
-## AIC                     -34.3820536
-## AICc                    -33.8487203
-## b1                        0.1701720
-## b1_slope                  0.9827701
+## logLik                  25.86492889
+## n                        3.00000000
+## AIC                    -45.72985778
+## AICc                   -45.19652445
+## b1                       0.03901859
+## b1_slope                 0.17458562
 ## breakpoint                       NA
 ## b2                               NA
 ## b2_slope                         NA
 ## quadratic_term                   NA
-## a1                       11.2931392
+## a1                       2.89818853
 ## a1_slope                         NA
 ## a2                               NA
 ## a2_slope                         NA
 ## Quadratic_c                      NA
 ## Quadratic_b                      NA
 ## Quadratic_a                      NA
-## nlm_termination_code      1.0000000</code></pre>
+## nlm_termination_code     2.00000000</code></pre>
 <ol start="4" style="list-style-type: lower-alpha">
 <li>Run model with separate rates for migration category AND including overlap proportion</li>
 </ol>
@@ -242,44 +242,44 @@ g9&lt;-evodat_parallel_patry$overlap_proportion_hz_info
 fit_par_patry &lt;- model.test.sisters(e9,t9,g9,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
 #plot(t9,e9,xlim=c(0,10),ylim=c(0,1),main=&quot;no divide&quot;)
 print(fit_par_patry) #View model parameters</code></pre>
-<pre><code>##                          BM_null   BM_linear     OU_null     OU_linear
-## logLik                1.81709758  3.79809764   9.3430399  9.615837e+00
-## n                     1.00000000  2.00000000   2.0000000  4.000000e+00
-## AIC                  -1.63419515 -3.59619527 -14.6860798 -1.123167e+01
-## AICc                 -1.39890103 -2.84619527 -13.9360798 -8.374531e+00
-## b1                    0.01120135  0.01488159   0.1445323  4.703912e-03
-## b1_slope                      NA -0.01328120          NA  3.300083e+00
-## breakpoint                    NA          NA          NA            NA
-## b2                            NA          NA          NA            NA
-## b2_slope                      NA          NA          NA            NA
-## quadratic_term                NA          NA          NA            NA
-## a1                            NA          NA   6.4260147  1.006121e-06
-## a1_slope                      NA          NA          NA  1.448354e+02
-## a2                            NA          NA          NA            NA
-## a2_slope                      NA          NA          NA            NA
-## Quadratic_c                   NA          NA          NA            NA
-## Quadratic_b                   NA          NA          NA            NA
-## Quadratic_a                   NA          NA          NA            NA
-## nlm_termination_code  1.00000000  2.00000000   1.0000000  1.000000e+00
+<pre><code>##                           BM_null   BM_linear    OU_null   OU_linear
+## logLik                3.135422112  4.43173578  6.7129518  6.75444820
+## n                     1.000000000  2.00000000  2.0000000  4.00000000
+## AIC                  -4.270844224 -4.86347156 -9.4259036 -5.50889639
+## AICc                 -4.035550107 -4.11347156 -8.6759036 -2.65175353
+## b1                    0.009749965  0.01351171  0.0404328  0.01742742
+## b1_slope                       NA -0.01163025         NA  1.20846276
+## breakpoint                     NA          NA         NA          NA
+## b2                             NA          NA         NA          NA
+## b2_slope                       NA          NA         NA          NA
+## quadratic_term                 NA          NA         NA          NA
+## a1                             NA          NA  1.1825905  0.57288635
+## a1_slope                       NA          NA         NA 35.94682128
+## a2                             NA          NA         NA          NA
+## a2_slope                       NA          NA         NA          NA
+## Quadratic_c                    NA          NA         NA          NA
+## Quadratic_b                    NA          NA         NA          NA
+## Quadratic_a                    NA          NA         NA          NA
+## nlm_termination_code  1.000000000  1.00000000  1.0000000  1.00000000
 ##                      OU_linear_beta
-## logLik                    9.3493582
-## n                         3.0000000
-## AIC                     -12.6987163
-## AICc                    -11.0987163
-## b1                        0.1358725
-## b1_slope                 -0.0181450
+## logLik                  6.715252446
+## n                       3.000000000
+## AIC                    -7.430504893
+## AICc                   -5.830504893
+## b1                      0.042173245
+## b1_slope                0.004070607
 ## breakpoint                       NA
 ## b2                               NA
 ## b2_slope                         NA
 ## quadratic_term                   NA
-## a1                        5.7139927
+## a1                      1.291403056
 ## a1_slope                         NA
 ## a2                               NA
 ## a2_slope                         NA
 ## Quadratic_c                      NA
 ## Quadratic_b                      NA
 ## Quadratic_a                      NA
-## nlm_termination_code      1.0000000</code></pre>
+## nlm_termination_code    1.000000000</code></pre>
 <pre class="r"><code># ci for parallels
 # intercept_beta_par&lt;-as.numeric(fit_par_patry[5,4])
 # slope_beta_par&lt;-as.numeric(fit_par_patry[6,4])
@@ -299,17 +299,17 @@ fit_perp_patry &lt;- model.test.sisters(e10,t10,g10,GRAD2=NULL,meserr1=0,meserr2
 #plot(t10,e10,xlim=c(0,10),ylim=c(0,1),main=&quot;divide&quot;)
 print(fit_perp_patry) #View model parameters</code></pre>
 <pre><code>##                            BM_null     BM_linear       OU_null
-## logLik                12.292816504  12.998809238  12.311903595
+## logLik                17.963671013  18.123135369  18.919184256
 ## n                      1.000000000   2.000000000   2.000000000
-## AIC                  -22.585633008 -21.997618476 -20.623807190
-## AICc                 -22.442775865 -21.553174031 -20.179362745
-## b1                     0.005610773   0.004711806   0.005943889
-## b1_slope                        NA   0.010524828            NA
+## AIC                  -33.927342026 -32.246270738 -33.838368513
+## AICc                 -33.784484883 -31.801826294 -33.393924068
+## b1                     0.003844453   0.003489983   0.006061431
+## b1_slope                        NA   0.004955765            NA
 ## breakpoint                      NA            NA            NA
 ## b2                              NA            NA            NA
 ## b2_slope                        NA            NA            NA
 ## quadratic_term                  NA            NA            NA
-## a1                              NA            NA   0.017960849
+## a1                              NA            NA   0.183192865
 ## a1_slope                        NA            NA            NA
 ## a2                              NA            NA            NA
 ## a2_slope                        NA            NA            NA
@@ -317,25 +317,25 @@ print(fit_perp_patry) #View model parameters</code></pre>
 ## Quadratic_b                     NA            NA            NA
 ## Quadratic_a                     NA            NA            NA
 ## nlm_termination_code   1.000000000   2.000000000   1.000000000
-##                         OU_linear OU_linear_beta
-## logLik                14.84309659    14.74453970
-## n                      4.00000000     3.00000000
-## AIC                  -21.68619319   -23.48907939
-## AICc                 -20.08619319   -22.56600247
-## b1                     0.01020582     0.01221565
-## b1_slope               0.11070409     0.15657782
-## breakpoint                     NA             NA
-## b2                             NA             NA
-## b2_slope                       NA             NA
-## quadratic_term                 NA             NA
-## a1                     0.58035594     0.76358166
-## a1_slope              -0.10009997             NA
-## a2                             NA             NA
-## a2_slope                       NA             NA
-## Quadratic_c                    NA             NA
-## Quadratic_b                    NA             NA
-## Quadratic_a                    NA             NA
-## nlm_termination_code   1.00000000     1.00000000</code></pre>
+##                          OU_linear OU_linear_beta
+## logLik                20.803469006   20.779708906
+## n                      4.000000000    3.000000000
+## AIC                  -33.606938013  -35.559417812
+## AICc                 -32.006938013  -34.636340889
+## b1                     0.007965075    0.008083926
+## b1_slope               0.070996826    0.077572300
+## breakpoint                      NA             NA
+## b2                              NA             NA
+## b2_slope                        NA             NA
+## quadratic_term                  NA             NA
+## a1                     0.657247001    0.676933949
+## a1_slope              -0.100099972             NA
+## a2                              NA             NA
+## a2_slope                        NA             NA
+## Quadratic_c                     NA             NA
+## Quadratic_b                     NA             NA
+## Quadratic_a                     NA             NA
+## nlm_termination_code   1.000000000    1.000000000</code></pre>
 <pre class="r"><code># ci for perpendiculars
 # intercept_beta_perp&lt;-as.numeric(fit_perp_patry[5,4])
 # slope_beta_perp&lt;-as.numeric(fit_perp_patry[6,4])
@@ -350,16 +350,16 @@ print(fit_perp_patry) #View model parameters</code></pre>
 logLike_BM&lt;-fit_par_patry[1,2]+fit_perp_patry[1,2]
 AIC_BM&lt;-2*1-2*logLike_BM
 print(AIC_BM)</code></pre>
-<pre><code>## [1] -31.59381</code></pre>
+<pre><code>## [1] -43.10974</code></pre>
 <pre class="r"><code>logLike_OU&lt;-fit_par_patry[1,4]+fit_perp_patry[1,4]
 AIC_OU&lt;-2*2-2*logLike_OU
 print(AIC_OU)</code></pre>
-<pre><code>## [1] -44.91787</code></pre>
+<pre><code>## [1] -51.11583</code></pre>
 <pre class="r"><code>## calculate AIC for perp/par with patry and using _linear_beta models
 logLike_OU&lt;-fit_par_patry[1,5]+fit_perp_patry[1,5]
 AIC_OU&lt;-2*2-2*logLike_OU
 print(AIC_OU)</code></pre>
-<pre><code>## [1] -44.1878</code></pre>
+<pre><code>## [1] -50.98992</code></pre>
 <p>RERUN MODELS WITH DIFFERENT PDIST</p>
 <p>Get things ready</p>
 <pre class="r"><code>evodat[&quot;speed_coi_100&quot;]&lt;-evodat$speed_coi*100
@@ -376,17 +376,17 @@ fit_all&lt;-model.test.sisters(e1,t1,l1,GRAD2=NULL,meserr1=0,meserr2=0,models,st
 #plot(t1,e1,xlim=c(0,10),ylim=c(0,1),main=&quot;all&quot;)
 print(fit_all)</code></pre>
 <pre><code>##                            BM_null      OU_null
-## logLik                11.517677698  14.98132302
+## logLik                17.083308165  21.50209242
 ## n                      1.000000000   2.00000000
-## AIC                  -21.035355395 -25.96264605
-## AICc                 -20.944446304 -25.68357628
-## b1                     0.008111741   0.01840354
+## AIC                  -32.166616330 -39.00418485
+## AICc                 -32.075707239 -38.72511508
+## b1                     0.006368274   0.01610987
 ## b1_slope                        NA           NA
 ## breakpoint                      NA           NA
 ## b2                              NA           NA
 ## b2_slope                        NA           NA
 ## quadratic_term                  NA           NA
-## a1                              NA   0.41903738
+## a1                              NA   0.52198339
 ## a1_slope                        NA           NA
 ## a2                              NA           NA
 ## a2_slope                        NA           NA
@@ -405,25 +405,25 @@ l2&lt;-evodat_parallel$mass_avg
 fit_par &lt;- model.test.sisters(e2,t2,l2,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
 #plot(t2,e2,xlim=c(0,10),ylim=c(0,1),main=&quot;no divide&quot;)
 print(fit_par) #View model parameters</code></pre>
-<pre><code>##                          BM_null     OU_null
-## logLik                1.87525561   9.3363520
-## n                     1.00000000   2.0000000
-## AIC                  -1.75051121 -14.6727041
-## AICc                 -1.51521709 -13.9227041
-## b1                    0.01108907   0.1528627
-## b1_slope                      NA          NA
-## breakpoint                    NA          NA
-## b2                            NA          NA
-## b2_slope                      NA          NA
-## quadratic_term                NA          NA
-## a1                            NA   6.8172372
-## a1_slope                      NA          NA
-## a2                            NA          NA
-## a2_slope                      NA          NA
-## Quadratic_c                   NA          NA
-## Quadratic_b                   NA          NA
-## Quadratic_a                   NA          NA
-## nlm_termination_code  1.00000000   1.0000000</code></pre>
+<pre><code>##                           BM_null     OU_null
+## logLik                3.169205795  6.69871738
+## n                     1.000000000  2.00000000
+## AIC                  -4.338411590 -9.39743476
+## AICc                 -4.103117473 -8.64743476
+## b1                    0.009677024  0.03968025
+## b1_slope                       NA          NA
+## breakpoint                     NA          NA
+## b2                             NA          NA
+## b2_slope                       NA          NA
+## quadratic_term                 NA          NA
+## a1                             NA  1.15929030
+## a1_slope                       NA          NA
+## a2                             NA          NA
+## a2_slope                       NA          NA
+## Quadratic_c                    NA          NA
+## Quadratic_b                    NA          NA
+## Quadratic_a                    NA          NA
+## nlm_termination_code  1.000000000  1.00000000</code></pre>
 <pre class="r"><code>## perpendiculars
 evodat_perp&lt;-subset(evodat,evodat$migration_category==&quot;perpendicular&quot;)
 e3 &lt;- evodat_perp$trait
@@ -432,34 +432,34 @@ l3&lt;-evodat_perp$mass_avg
 fit_perp &lt;- model.test.sisters(e3,t3,l3,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
 #plot(t3,e3,xlim=c(0,10),ylim=c(0,1),main=&quot;divide&quot;)
 print(fit_perp) #View model parameters</code></pre>
-<pre><code>##                            BM_null       OU_null
-## logLik                10.705974139  1.070597e+01
-## n                      1.000000000  2.000000e+00
-## AIC                  -19.411948277 -1.741195e+01
-## AICc                 -19.251948277 -1.691195e+01
-## b1                     0.006016585  6.016190e-03
-## b1_slope                        NA            NA
-## breakpoint                      NA            NA
-## b2                              NA            NA
-## b2_slope                        NA            NA
-## quadratic_term                  NA            NA
-## a1                              NA  1.105969e-06
-## a1_slope                        NA            NA
-## a2                              NA            NA
-## a2_slope                        NA            NA
-## Quadratic_c                     NA            NA
-## Quadratic_b                     NA            NA
-## Quadratic_a                     NA            NA
-## nlm_termination_code   1.000000000  2.000000e+00</code></pre>
+<pre><code>##                            BM_null      OU_null
+## logLik                16.083038233  16.69516608
+## n                      1.000000000   2.00000000
+## AIC                  -30.166076466 -29.39033217
+## AICc                 -30.006076466 -28.89033217
+## b1                     0.004039894   0.00579031
+## b1_slope                        NA           NA
+## breakpoint                      NA           NA
+## b2                              NA           NA
+## b2_slope                        NA           NA
+## quadratic_term                  NA           NA
+## a1                              NA   0.14199033
+## a1_slope                        NA           NA
+## a2                              NA           NA
+## a2_slope                        NA           NA
+## Quadratic_c                     NA           NA
+## Quadratic_b                     NA           NA
+## Quadratic_a                     NA           NA
+## nlm_termination_code   1.000000000   1.00000000</code></pre>
 <pre class="r"><code>## calculate AIC for perp/par
 logLike_BM&lt;-fit_par[1,1]+fit_perp[1,1]
 AIC_BM&lt;-2*1-2*logLike_BM
 print(AIC_BM)</code></pre>
-<pre><code>## [1] -23.16246</code></pre>
+<pre><code>## [1] -36.50449</code></pre>
 <pre class="r"><code>logLike_OU&lt;-fit_par[1,2]+fit_perp[1,2]
 AIC_OU&lt;-2*2-2*logLike_OU
 print(AIC_OU)</code></pre>
-<pre><code>## [1] -36.08465</code></pre>
+<pre><code>## [1] -42.78777</code></pre>
 <ol start="3" style="list-style-type: lower-alpha">
 <li>Run model with overlap proportion as continuous variable</li>
 </ol>
@@ -470,44 +470,44 @@ g9&lt;-evodat$overlap_proportion_hz_info
 fit_par_patry &lt;- model.test.sisters(e9,t9,g9,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
 #plot(t9,e9,xlim=c(0,10),ylim=c(0,1),main=&quot;no divide&quot;)
 print(fit_par_patry) #View model parameters</code></pre>
-<pre><code>##                            BM_null     BM_linear      OU_null   OU_linear
-## logLik                11.517677698  11.911380845  14.98132302  17.7660578
-## n                      1.000000000   2.000000000   2.00000000   4.0000000
-## AIC                  -21.035355395 -19.822761690 -25.96264605 -27.5321156
-## AICc                 -20.944446304 -19.543691922 -25.68357628 -26.5565059
-## b1                     0.008111741   0.009042660   0.01840354   0.7012834
-## b1_slope                        NA  -0.005024034           NA   6.1061289
-## breakpoint                      NA            NA           NA          NA
-## b2                              NA            NA           NA          NA
-## b2_slope                        NA            NA           NA          NA
-## quadratic_term                  NA            NA           NA          NA
-## a1                              NA            NA   0.41903738  46.3430819
-## a1_slope                        NA            NA           NA  32.0689495
-## a2                              NA            NA           NA          NA
-## a2_slope                        NA            NA           NA          NA
-## Quadratic_c                     NA            NA           NA          NA
-## Quadratic_b                     NA            NA           NA          NA
-## Quadratic_a                     NA            NA           NA          NA
-## nlm_termination_code   1.000000000   2.000000000   1.00000000   1.0000000
+<pre><code>##                            BM_null     BM_linear      OU_null    OU_linear
+## logLik                17.083308165  17.261153402  21.50209242  23.46520006
+## n                      1.000000000   2.000000000   2.00000000   4.00000000
+## AIC                  -32.166616330 -30.522306804 -39.00418485 -38.93040011
+## AICc                 -32.075707239 -30.243237036 -38.72511508 -37.95479036
+## b1                     0.006368274   0.006913594   0.01610987   0.02849367
+## b1_slope                        NA  -0.002902299           NA   0.33996329
+## breakpoint                      NA            NA           NA           NA
+## b2                              NA            NA           NA           NA
+## b2_slope                        NA            NA           NA           NA
+## quadratic_term                  NA            NA           NA           NA
+## a1                              NA            NA   0.52198339   2.19259144
+## a1_slope                        NA            NA           NA   4.81567497
+## a2                              NA            NA           NA           NA
+## a2_slope                        NA            NA           NA           NA
+## Quadratic_c                     NA            NA           NA           NA
+## Quadratic_b                     NA            NA           NA           NA
+## Quadratic_a                     NA            NA           NA           NA
+## nlm_termination_code   1.000000000   2.000000000   1.00000000   1.00000000
 ##                      OU_linear_beta
-## logLik                   17.7012658
-## n                         3.0000000
-## AIC                     -29.4025317
-## AICc                    -28.8311031
-## b1                        0.1605178
-## b1_slope                  0.9316062
+## logLik                  23.25625060
+## n                        3.00000000
+## AIC                    -40.51250120
+## AICc                   -39.94107263
+## b1                       0.03512405
+## b1_slope                 0.15066856
 ## breakpoint                       NA
 ## b2                               NA
 ## b2_slope                         NA
 ## quadratic_term                   NA
-## a1                       10.1556782
+## a1                       2.45260812
 ## a1_slope                         NA
 ## a2                               NA
 ## a2_slope                         NA
 ## Quadratic_c                      NA
 ## Quadratic_b                      NA
 ## Quadratic_a                      NA
-## nlm_termination_code      1.0000000</code></pre>
+## nlm_termination_code     1.00000000</code></pre>
 <ol start="4" style="list-style-type: lower-alpha">
 <li>Run model with separate rates for migration category AND including overlap proportion</li>
 </ol>
@@ -519,44 +519,44 @@ g9&lt;-evodat_parallel_patry$overlap_proportion_hz_info
 fit_par_patry &lt;- model.test.sisters(e9,t9,g9,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
 #plot(t9,e9,xlim=c(0,10),ylim=c(0,1),main=&quot;no divide&quot;)
 print(fit_par_patry) #View model parameters</code></pre>
-<pre><code>##                          BM_null   BM_linear     OU_null     OU_linear
-## logLik                1.87525561  3.83364350   9.3363520  9.607534e+00
-## n                     1.00000000  2.00000000   2.0000000  4.000000e+00
-## AIC                  -1.75051121 -3.66728700 -14.6727041 -1.121507e+01
-## AICc                 -1.51521709 -2.91728700 -13.9227041 -8.357925e+00
-## b1                    0.01108907  0.01473674   0.1528627  4.700108e-03
-## b1_slope                      NA -0.01312099          NA  3.229132e+00
-## breakpoint                    NA          NA          NA            NA
-## b2                            NA          NA          NA            NA
-## b2_slope                      NA          NA          NA            NA
-## quadratic_term                NA          NA          NA            NA
-## a1                            NA          NA   6.8172372  1.300963e-06
-## a1_slope                      NA          NA          NA  1.418180e+02
-## a2                            NA          NA          NA            NA
-## a2_slope                      NA          NA          NA            NA
-## Quadratic_c                   NA          NA          NA            NA
-## Quadratic_b                   NA          NA          NA            NA
-## Quadratic_a                   NA          NA          NA            NA
-## nlm_termination_code  1.00000000  1.00000000   1.0000000  1.000000e+00
+<pre><code>##                           BM_null   BM_linear     OU_null   OU_linear
+## logLik                3.169205795  4.44640377  6.69871738  6.74158476
+## n                     1.000000000  2.00000000  2.00000000  4.00000000
+## AIC                  -4.338411590 -4.89280754 -9.39743476 -5.48316952
+## AICc                 -4.103117473 -4.14280754 -8.64743476 -2.62602666
+## b1                    0.009677024  0.01340596  0.03968025  0.01695905
+## b1_slope                       NA -0.01150453          NA  1.19324408
+## breakpoint                     NA          NA          NA          NA
+## b2                             NA          NA          NA          NA
+## b2_slope                       NA          NA          NA          NA
+## quadratic_term                 NA          NA          NA          NA
+## a1                             NA          NA  1.15929030  0.55387980
+## a1_slope                       NA          NA          NA 35.51621660
+## a2                             NA          NA          NA          NA
+## a2_slope                       NA          NA          NA          NA
+## Quadratic_c                    NA          NA          NA          NA
+## Quadratic_b                    NA          NA          NA          NA
+## Quadratic_a                    NA          NA          NA          NA
+## nlm_termination_code  1.000000000  1.00000000  1.00000000  1.00000000
 ##                      OU_linear_beta
-## logLik                   9.34151244
-## n                        3.00000000
-## AIC                    -12.68302487
-## AICc                   -11.08302487
-## b1                       0.14205852
-## b1_slope                -0.01739632
+## logLik                  6.700891168
+## n                       3.000000000
+## AIC                    -7.401782335
+## AICc                   -5.801782335
+## b1                      0.041204516
+## b1_slope                0.004087859
 ## breakpoint                       NA
 ## b2                               NA
 ## b2_slope                         NA
 ## quadratic_term                   NA
-## a1                       6.01896695
+## a1                      1.262467049
 ## a1_slope                         NA
 ## a2                               NA
 ## a2_slope                         NA
 ## Quadratic_c                      NA
 ## Quadratic_b                      NA
 ## Quadratic_a                      NA
-## nlm_termination_code     1.00000000</code></pre>
+## nlm_termination_code    2.000000000</code></pre>
 <pre class="r"><code># ci for parallels
 # intercept_beta_par&lt;-as.numeric(fit_par_patry[5,4])
 # slope_beta_par&lt;-as.numeric(fit_par_patry[6,4])
@@ -575,38 +575,38 @@ g10 &lt;-evodat_perp_patry$overlap_proportion_hz_info
 fit_perp_patry &lt;- model.test.sisters(e10,t10,g10,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
 #plot(t10,e10,xlim=c(0,10),ylim=c(0,1),main=&quot;divide&quot;)
 print(fit_perp_patry) #View model parameters</code></pre>
-<pre><code>##                            BM_null     BM_linear       OU_null
-## logLik                10.705974139  11.505946242  1.070597e+01
-## n                      1.000000000   2.000000000  2.000000e+00
-## AIC                  -19.411948277 -19.011892484 -1.741195e+01
-## AICc                 -19.251948277 -18.511892484 -1.691195e+01
-## b1                     0.006016585   0.004927097  6.016190e-03
-## b1_slope                        NA   0.013494011            NA
-## breakpoint                      NA            NA            NA
-## b2                              NA            NA            NA
-## b2_slope                        NA            NA            NA
-## quadratic_term                  NA            NA            NA
-## a1                              NA            NA  1.105969e-06
-## a1_slope                        NA            NA            NA
-## a2                              NA            NA            NA
-## a2_slope                        NA            NA            NA
-## Quadratic_c                     NA            NA            NA
-## Quadratic_b                     NA            NA            NA
-## Quadratic_a                     NA            NA            NA
-## nlm_termination_code   1.000000000   1.000000000  2.000000e+00
+<pre><code>##                            BM_null     BM_linear      OU_null
+## logLik                16.083038233  16.304963576  16.69516608
+## n                      1.000000000   2.000000000   2.00000000
+## AIC                  -30.166076466 -28.609927152 -29.39033217
+## AICc                 -30.006076466 -28.109927152 -28.89033217
+## b1                     0.004039894   0.003553306   0.00579031
+## b1_slope                        NA   0.007424485           NA
+## breakpoint                      NA            NA           NA
+## b2                              NA            NA           NA
+## b2_slope                        NA            NA           NA
+## quadratic_term                  NA            NA           NA
+## a1                              NA            NA   0.14199033
+## a1_slope                        NA            NA           NA
+## a2                              NA            NA           NA
+## a2_slope                        NA            NA           NA
+## Quadratic_c                     NA            NA           NA
+## Quadratic_b                     NA            NA           NA
+## Quadratic_a                     NA            NA           NA
+## nlm_termination_code   1.000000000   1.000000000   1.00000000
 ##                          OU_linear OU_linear_beta
-## logLik                12.878832120   12.750579413
+## logLik                18.396000534   18.374698572
 ## n                      4.000000000    3.000000000
-## AIC                  -17.757664241  -19.501158827
-## AICc                 -15.939482423  -18.457680566
-## b1                     0.008597366    0.009748347
-## b1_slope               0.086918408    0.121604189
+## AIC                  -28.792001068  -30.749397145
+## AICc                 -26.973819249  -29.705918884
+## b1                     0.006855817    0.006842032
+## b1_slope               0.067765174    0.073336452
 ## breakpoint                      NA             NA
 ## b2                              NA             NA
 ## b2_slope                        NA             NA
 ## quadratic_term                  NA             NA
-## a1                     0.396030464    0.503656235
-## a1_slope              -0.100100000             NA
+## a1                     0.513337925    0.518070388
+## a1_slope              -0.100099997             NA
 ## a2                              NA             NA
 ## a2_slope                        NA             NA
 ## Quadratic_c                     NA             NA
@@ -627,16 +627,16 @@ print(fit_perp_patry) #View model parameters</code></pre>
 logLike_BM&lt;-fit_par_patry[1,2]+fit_perp_patry[1,2]
 AIC_BM&lt;-2*1-2*logLike_BM
 print(AIC_BM)</code></pre>
-<pre><code>## [1] -28.67918</code></pre>
+<pre><code>## [1] -39.50273</code></pre>
 <pre class="r"><code>logLike_OU&lt;-fit_par_patry[1,4]+fit_perp_patry[1,4]
 AIC_OU&lt;-2*2-2*logLike_OU
 print(AIC_OU)</code></pre>
-<pre><code>## [1] -40.97273</code></pre>
+<pre><code>## [1] -46.27517</code></pre>
 <pre class="r"><code>## calculate AIC for perp/par with patry and using _linear_beta models
 logLike_OU&lt;-fit_par_patry[1,5]+fit_perp_patry[1,5]
 AIC_OU&lt;-2*2-2*logLike_OU
 print(AIC_OU)</code></pre>
-<pre><code>## [1] -40.18418</code></pre>
+<pre><code>## [1] -46.15118</code></pre>
 <p>LIMIT DATASET TO 36 NON-SYM PAIRS AND RUN _LINEAR* MODELS</p>
 <pre class="r"><code>evodat$migration_category&lt;-recode(evodat$migration_category,&quot;'perpendicular'=0;'parallel'=1&quot;)
 models = c(&quot;BM_null&quot;, &quot;BM_linear&quot;, &quot;OU_null&quot;, &quot;OU_linear&quot;,&quot;OU_linear_beta&quot;)</code></pre>
@@ -650,43 +650,43 @@ fit_all&lt;-model.test.sisters(e1,t1,l1,GRAD2=NULL,meserr1=0,meserr2=0,models,st
 #plot(t1,e1,xlim=c(0,10),ylim=c(0,1),main=&quot;all&quot;)
 print(fit_all)</code></pre>
 <pre><code>##                            BM_null     BM_linear      OU_null
-## logLik                11.464131116  1.485697e+01  15.02962912
+## logLik                16.992946585  1.839867e+01  21.53855512
 ## n                      1.000000000  2.000000e+00   2.00000000
-## AIC                  -20.928262232 -2.571394e+01 -26.05925823
-## AICc                 -20.837353141 -2.543487e+01 -25.78018846
-## b1                     0.008237548  2.919240e-03   0.01908006
-## b1_slope                        NA  2.457382e-04           NA
+## AIC                  -31.985893169 -3.279733e+01 -39.07711024
+## AICc                 -31.894984078 -3.251826e+01 -38.79804047
+## b1                     0.006477401  3.704316e-03   0.01663957
+## b1_slope                        NA  1.355225e-04           NA
 ## breakpoint                      NA            NA           NA
 ## b2                              NA            NA           NA
 ## b2_slope                        NA            NA           NA
 ## quadratic_term                  NA            NA           NA
-## a1                              NA            NA   0.43820904
+## a1                              NA            NA   0.54129927
 ## a1_slope                        NA            NA           NA
 ## a2                              NA            NA           NA
 ## a2_slope                        NA            NA           NA
 ## Quadratic_c                     NA            NA           NA
 ## Quadratic_b                     NA            NA           NA
 ## Quadratic_a                     NA            NA           NA
-## nlm_termination_code   1.000000000  1.000000e+00   1.00000000
+## nlm_termination_code   1.000000000  2.000000e+00   1.00000000
 ##                          OU_linear OU_linear_beta
-## logLik                1.884623e+01   1.843180e+01
+## logLik                2.247167e+01   2.232561e+01
 ## n                     4.000000e+00   3.000000e+00
-## AIC                  -2.969245e+01  -3.086360e+01
-## AICc                 -2.871684e+01  -3.029217e+01
-## b1                    7.052118e-03   4.884194e-03
-## b1_slope              4.630297e-04   6.983064e-04
+## AIC                  -3.694335e+01  -3.865121e+01
+## AICc                 -3.596774e+01  -3.807978e+01
+## b1                    4.319032e-03   8.710881e-03
+## b1_slope              6.162271e-04   2.887814e-04
 ## breakpoint                      NA             NA
 ## b2                              NA             NA
 ## b2_slope                        NA             NA
 ## quadratic_term                  NA             NA
-## a1                    6.081894e-01   4.415386e-01
-## a1_slope             -1.117982e-02             NA
+## a1                    1.822982e-01   4.354755e-01
+## a1_slope              1.637295e-02             NA
 ## a2                              NA             NA
 ## a2_slope                        NA             NA
 ## Quadratic_c                     NA             NA
 ## Quadratic_b                     NA             NA
 ## Quadratic_a                     NA             NA
-## nlm_termination_code  2.000000e+00   1.000000e+00</code></pre>
+## nlm_termination_code  1.000000e+00   1.000000e+00</code></pre>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>Run model allowing separate rates</li>
 </ol>
@@ -697,17 +697,17 @@ fit_par_patry &lt;- model.test.sisters(e9,t9,g9,GRAD2=NULL,meserr1=0,meserr2=0,m
 #plot(t9,e9,xlim=c(0,10),ylim=c(0,1),main=&quot;no divide&quot;)
 print(fit_par_patry) #View model parameters</code></pre>
 <pre><code>##                            BM_null     BM_linear      OU_null
-## logLik                11.464131116  12.485675447  15.02962912
+## logLik                16.992946585  19.038902697  21.53855512
 ## n                      1.000000000   2.000000000   2.00000000
-## AIC                  -20.928262232 -20.971350893 -26.05925823
-## AICc                 -20.837353141 -20.692281126 -25.78018846
-## b1                     0.008237548   0.006151958   0.01908006
-## b1_slope                        NA   0.005049170           NA
+## AIC                  -31.985893169 -34.077805394 -39.07711024
+## AICc                 -31.894984078 -33.798735627 -38.79804047
+## b1                     0.006477401   0.004174501   0.01663957
+## b1_slope                        NA   0.005575368           NA
 ## breakpoint                      NA            NA           NA
 ## b2                              NA            NA           NA
 ## b2_slope                        NA            NA           NA
 ## quadratic_term                  NA            NA           NA
-## a1                              NA            NA   0.43820904
+## a1                              NA            NA   0.54129927
 ## a1_slope                        NA            NA           NA
 ## a2                              NA            NA           NA
 ## a2_slope                        NA            NA           NA
@@ -716,18 +716,18 @@ print(fit_par_patry) #View model parameters</code></pre>
 ## Quadratic_a                     NA            NA           NA
 ## nlm_termination_code   1.000000000   1.000000000   1.00000000
 ##                          OU_linear OU_linear_beta
-## logLik                20.012035792   15.069457352
+## logLik                23.316586844   22.467331262
 ## n                      4.000000000    3.000000000
-## AIC                  -32.024071585  -24.138914703
-## AICc                 -31.048461829  -23.567486132
-## b1                     0.006205505    0.021412591
-## b1_slope               0.138327591   -0.002493817
+## AIC                  -38.633173688  -38.934662524
+## AICc                 -37.657563932  -38.363233952
+## b1                     0.006131171    0.010405616
+## b1_slope               0.034301665    0.008299899
 ## breakpoint                      NA             NA
 ## b2                              NA             NA
 ## b2_slope                        NA             NA
 ## quadratic_term                  NA             NA
-## a1                     0.002721359    0.487582295
-## a1_slope               6.423332328             NA
+## a1                     0.156197797    0.411590877
+## a1_slope               1.026393696             NA
 ## a2                              NA             NA
 ## a2_slope                        NA             NA
 ## Quadratic_c                     NA             NA
@@ -746,10 +746,10 @@ evodat[&quot;avg_colour10&quot;]&lt;-evodat$avg_colour/10
 evodat[&quot;avg_all10&quot;]&lt;-evodat$avg_2/10
 
 ## set trait for analyses
-#evodat[&quot;trait&quot;]&lt;-evodat$avg_all10 #re-set this for each variable being analyzed
+evodat[&quot;trait&quot;]&lt;-evodat$avg_all10 #re-set this for each variable being analyzed
 #evodat[&quot;trait&quot;]&lt;-evodat$avg_song10
 #evodat[&quot;trait&quot;]&lt;-evodat$avg_colour10
-evodat[&quot;trait&quot;]&lt;-evodat$avg_morph10
+#evodat[&quot;trait&quot;]&lt;-evodat$avg_morph10
 
 evodat=subset(evodat,evodat$visual_official_jason!=&quot;sym&quot;)
 models = c(&quot;BM_null&quot;, &quot;OU_null&quot;)</code></pre>
@@ -763,17 +763,17 @@ fit_all&lt;-model.test.sisters(e1,t1,l1,GRAD2=NULL,meserr1=0,meserr2=0,models,st
 #plot(t1,e1,xlim=c(0,10),ylim=c(0,1),main=&quot;all&quot;)
 print(fit_all)</code></pre>
 <pre><code>##                            BM_null     OU_null
-## logLik                12.934141633  22.3469207
+## logLik                17.942066875  26.1063276
 ## n                      1.000000000   2.0000000
-## AIC                  -23.868283266 -40.6938413
-## AICc                 -23.750636207 -40.3302050
-## b1                     0.008319346   0.8662344
+## AIC                  -33.884133749 -48.2126552
+## AICc                 -33.766486691 -47.8490188
+## b1                     0.006298839   0.0566004
 ## b1_slope                        NA          NA
 ## breakpoint                      NA          NA
 ## b2                              NA          NA
 ## b2_slope                        NA          NA
 ## quadratic_term                  NA          NA
-## a1                              NA  51.2017313
+## a1                              NA   3.9760407
 ## a1_slope                        NA          NA
 ## a2                              NA          NA
 ## a2_slope                        NA          NA
@@ -792,25 +792,25 @@ l2&lt;-evodat_parallel$mass_avg
 fit_par &lt;- model.test.sisters(e2,t2,l2,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
 #plot(t2,e2,xlim=c(0,10),ylim=c(0,1),main=&quot;no divide&quot;)
 print(fit_par) #View model parameters</code></pre>
-<pre><code>##                          BM_null   OU_null
-## logLik                1.98397640  5.026157
-## n                     1.00000000  2.000000
-## AIC                  -1.96795280 -6.052315
-## AICc                 -1.30128614 -3.652315
-## b1                    0.02098598  1.022275
-## b1_slope                      NA        NA
-## breakpoint                    NA        NA
-## b2                            NA        NA
-## b2_slope                      NA        NA
-## quadratic_term                NA        NA
-## a1                            NA 61.340932
-## a1_slope                      NA        NA
-## a2                            NA        NA
-## a2_slope                      NA        NA
-## Quadratic_c                   NA        NA
-## Quadratic_b                   NA        NA
-## Quadratic_a                   NA        NA
-## nlm_termination_code  1.00000000  1.000000</code></pre>
+<pre><code>##                          BM_null     OU_null
+## logLik                3.22849769  5.41150249
+## n                     1.00000000  2.00000000
+## AIC                  -4.45699537 -6.82300498
+## AICc                 -3.79032870 -4.42300498
+## b1                    0.01537471  0.07334116
+## b1_slope                      NA          NA
+## breakpoint                    NA          NA
+## b2                            NA          NA
+## b2_slope                      NA          NA
+## quadratic_term                NA          NA
+## a1                            NA  4.32869282
+## a1_slope                      NA          NA
+## a2                            NA          NA
+## a2_slope                      NA          NA
+## Quadratic_c                   NA          NA
+## Quadratic_b                   NA          NA
+## Quadratic_a                   NA          NA
+## nlm_termination_code  1.00000000  1.00000000</code></pre>
 <pre class="r"><code>## perpendiculars
 evodat_perp&lt;-subset(evodat,evodat$migration_category==&quot;perpendicular&quot;)
 e3 &lt;- evodat_perp$trait
@@ -819,34 +819,34 @@ l3&lt;-evodat_perp$mass_avg
 fit_perp &lt;- model.test.sisters(e3,t3,l3,GRAD2=NULL,meserr1=0,meserr2=0,models,starting=NULL,Beta_starting=NULL,Alpha_starting=NULL)
 #plot(t3,e3,xlim=c(0,10),ylim=c(0,1),main=&quot;divide&quot;)
 print(fit_perp) #View model parameters</code></pre>
-<pre><code>##                            BM_null      OU_null
-## logLik                15.242455523  17.84428119
-## n                      1.000000000   2.00000000
-## AIC                  -28.484911047 -31.68856238
-## AICc                 -28.331064893 -31.20856238
-## b1                     0.004700308   0.01283746
-## b1_slope                        NA           NA
-## breakpoint                      NA           NA
-## b2                              NA           NA
-## b2_slope                        NA           NA
-## quadratic_term                  NA           NA
-## a1                              NA   0.62957916
-## a1_slope                        NA           NA
-## a2                              NA           NA
-## a2_slope                        NA           NA
-## Quadratic_c                     NA           NA
-## Quadratic_b                     NA           NA
-## Quadratic_a                     NA           NA
-## nlm_termination_code   1.000000000   1.00000000</code></pre>
+<pre><code>##                            BM_null     OU_null
+## logLik                18.570910397  21.1513273
+## n                      1.000000000   2.0000000
+## AIC                  -35.141820794 -38.3026546
+## AICc                 -34.987974640 -37.8226546
+## b1                     0.003705733   0.0101522
+## b1_slope                        NA          NA
+## breakpoint                      NA          NA
+## b2                              NA          NA
+## b2_slope                        NA          NA
+## quadratic_term                  NA          NA
+## a1                              NA   0.6308815
+## a1_slope                        NA          NA
+## a2                              NA          NA
+## a2_slope                        NA          NA
+## Quadratic_c                     NA          NA
+## Quadratic_b                     NA          NA
+## Quadratic_a                     NA          NA
+## nlm_termination_code   1.000000000   1.0000000</code></pre>
 <pre class="r"><code>## calculate AIC for perp/par
 logLike_BM&lt;-fit_par[1,1]+fit_perp[1,1]
 AIC_BM&lt;-2*1-2*logLike_BM
 print(AIC_BM)</code></pre>
-<pre><code>## [1] -32.45286</code></pre>
+<pre><code>## [1] -41.59882</code></pre>
 <pre class="r"><code>logLike_OU&lt;-fit_par[1,2]+fit_perp[1,2]
 AIC_OU&lt;-2*2-2*logLike_OU
 print(AIC_OU)</code></pre>
-<pre><code>## [1] -41.74088</code></pre>
+<pre><code>## [1] -49.12566</code></pre>
 
 
 </div>
