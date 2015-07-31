@@ -23,8 +23,8 @@ evodat["avg_colour10"]<-evodat$avg_colour/10
 evodat["avg_all10"]<-evodat$avg_2/10
 
 ## set trait for analyses
-evodat["trait"]<-evodat$avg_all10 #re-set this for each variable being analyzed
-#evodat["trait"]<-evodat$avg_song10
+#evodat["trait"]<-evodat$avg_all10 #re-set this for each variable being analyzed
+evodat["trait"]<-evodat$avg_song10
 #evodat["trait"]<-evodat$avg_colour10
 #evodat["trait"]<-evodat$avg_morph10
 ```

@@ -1,0 +1,119 @@
+---
+title: "lmers_jul30_geog_pdist_revision"
+author: "kira_delmore"
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    keep_md: yes
+  pdf_document: default
+---
+
+Load libraries and deal with data
+
+```{r}
+library(lme4) 
+library(MuMIn)
+library(nlme)
+library(visreg)
+
+setwd("C:/Users/Kira Delmore/Dropbox/Haley and Kira's Comparative Analysis Extravaganza/Analysis")
+comp <- read.csv("../working files/pair_hedges_avg_jul30.csv",stringsAsFactors = FALSE,strip.white = TRUE, na.strings = c("NA",""))
+
+comp$overlap_proportion_log <- log(1+comp$overlap_proportion_hz_info) ## log the skewed variables
+comp$breed_lat_avg_log <- log(comp$breed_lat_avg)
+comp$distance_avg_log <- log(comp$distance_avg)
+comp$p_distance_log <- log(comp$p_distance)
+comp$p_distance_log <- log(comp$p_distance)
+comp$mass_avg_log <- log(comp$mass_avg)
+comp$avg_log <- log(comp$avg_2)
+comp$avg_morph_log <- log(comp$avg_morph)
+comp$avg_song_log <- log(comp$avg_song)
+comp$avg_colour_log <- log(comp$avg_colour)
+comp$speed_coi_log<-log(comp$speed_coi)
+
+comp$fam<-as.factor(comp$family) ## convert characters to factors
+comp$sp1_genus<-as.factor(comp$sp1_genus)
+comp$migration_category<-as.factor(comp$migration_category)
+```
+
+All traits together
+
+```{r}
+Global_Personal.Use<-lmer(avg_log ~migration_category+overlap_proportion_log+breed_lat_avg_log+distance_avg_log+p_distance_log+mass_avg_log + (1 | family/sp1_genus),data=comp,na.action = na.pass)
+All_models_Personal.Use<-dredge(Global_Personal.Use, extra = "R^2") # all possible combinations of fixed effects
+Sub_All_models_Personal.Use<-subset(All_models_Personal.Use, delta<2) # top models (less than delta AICc = 2 from 'best' model)
+Avg.Personal.Use<-model.avg(All_models_Personal.Use, subset=delta<2) # model averaging
+Avg.Personal.Use$coefTable # parameter estimates and SEs from average model
+```
+
+Each set of traits separately
+
+```{r}
+#### colour
+
+Global_Personal.Use<-lmer(avg_colour_log ~migration_category+overlap_proportion_log+breed_lat_avg_log+distance_avg_log+p_distance_log+mass_avg_log + (1 | family/sp1_genus),data=comp,na.action = na.pass)
+All_models_Personal.Use<-dredge(Global_Personal.Use, extra = "R^2") # all possible combinations of fixed effects
+Sub_All_models_Personal.Use<-subset(All_models_Personal.Use, delta<2) # top models (less than delta AICc = 2 from 'best' model)
+Avg.Personal.Use<-model.avg(All_models_Personal.Use, subset=delta<2) # model averaging
+Avg.Personal.Use$coefTable # parameter estimates and SEs from average model
+
+#### song
+
+Global_Personal.Use<-lmer(avg_song_log ~migration_category+overlap_proportion_log+breed_lat_avg_log+distance_avg_log+p_distance_log+mass_avg_log + (1 | family/sp1_genus),data=comp,na.action = na.pass)
+All_models_Personal.Use<-dredge(Global_Personal.Use, extra = "R^2") # all possible combinations of fixed effects
+Sub_All_models_Personal.Use<-subset(All_models_Personal.Use, delta<2) # top models (less than delta AICc = 2 from 'best' model)
+Avg.Personal.Use<-model.avg(All_models_Personal.Use, subset=delta<2) # model averaging
+Avg.Personal.Use$coefTable # parameter estimates and SEs from average model
+
+#### morph
+
+Global_Personal.Use<-lmer(avg_morph_log ~migration_category+overlap_proportion_log+breed_lat_avg_log+distance_avg_log+p_distance_log+mass_avg_log + (1 | family/sp1_genus),data=comp,na.action = na.pass)
+All_models_Personal.Use<-dredge(Global_Personal.Use, extra = "R^2") # all possible combinations of fixed effects
+Sub_All_models_Personal.Use<-subset(All_models_Personal.Use, delta<2) # top models (less than delta AICc = 2 from 'best' model)
+Avg.Personal.Use<-model.avg(All_models_Personal.Use, subset=delta<2) # model averaging
+Avg.Personal.Use$coefTable # parameter estimates and SEs from average model
+```
+
+CORRECTING FOR DIFFERENCES IN TIME OF DIVERGENCE ESTIMATED FROM CYTB VS COI
+
+```{r}
+comp<-subset(comp,comp$mtdna_type!="no")
+```
+
+All traits together
+
+```{r}
+Global_Personal.Use<-lmer(avg_log ~migration_category+overlap_proportion_log+breed_lat_avg_log+distance_avg_log+speed_coi_log+mass_avg_log + (1 | family/sp1_genus),data=comp,na.action = na.pass)
+All_models_Personal.Use<-dredge(Global_Personal.Use, extra = "R^2") # all possible combinations of fixed effects
+Sub_All_models_Personal.Use<-subset(All_models_Personal.Use, delta<2) # top models (less than delta AICc = 2 from 'best' model)
+Avg.Personal.Use<-model.avg(All_models_Personal.Use, subset=delta<2) # model averaging
+Avg.Personal.Use$coefTable # parameter estimates and SEs from average model
+```
+
+Each set of traits separately
+
+```{r}
+#### colour
+
+Global_Personal.Use<-lmer(avg_colour_log ~migration_category+overlap_proportion_log+breed_lat_avg_log+distance_avg_log+speed_coi_log+mass_avg_log + (1 | family/sp1_genus),data=comp,na.action = na.pass)
+All_models_Personal.Use<-dredge(Global_Personal.Use, extra = "R^2") # all possible combinations of fixed effects
+Sub_All_models_Personal.Use<-subset(All_models_Personal.Use, delta<2) # top models (less than delta AICc = 2 from 'best' model)
+Avg.Personal.Use<-model.avg(All_models_Personal.Use, subset=delta<2) # model averaging
+Avg.Personal.Use$coefTable # parameter estimates and SEs from average model
+
+#### song
+
+Global_Personal.Use<-lmer(avg_song_log ~migration_category+overlap_proportion_log+breed_lat_avg_log+distance_avg_log+speed_coi_log+mass_avg_log + (1 | family/sp1_genus),data=comp,na.action = na.pass)
+All_models_Personal.Use<-dredge(Global_Personal.Use, extra = "R^2") # all possible combinations of fixed effects
+Sub_All_models_Personal.Use<-subset(All_models_Personal.Use, delta<2) # top models (less than delta AICc = 2 from 'best' model)
+Avg.Personal.Use<-model.avg(All_models_Personal.Use, subset=delta<2) # model averaging
+Avg.Personal.Use$coefTable # parameter estimates and SEs from average model
+
+#### morph
+
+Global_Personal.Use<-lmer(avg_morph_log ~migration_category+overlap_proportion_log+breed_lat_avg_log+distance_avg_log+speed_coi_log+mass_avg_log + (1 | family/sp1_genus),data=comp,na.action = na.pass)
+All_models_Personal.Use<-dredge(Global_Personal.Use, extra = "R^2") # all possible combinations of fixed effects
+Sub_All_models_Personal.Use<-subset(All_models_Personal.Use, delta<2) # top models (less than delta AICc = 2 from 'best' model)
+Avg.Personal.Use<-model.avg(All_models_Personal.Use, subset=delta<2) # model averaging
+Avg.Personal.Use$coefTable # parameter estimates and SEs from average model
+```
