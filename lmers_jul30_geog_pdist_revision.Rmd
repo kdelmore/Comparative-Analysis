@@ -46,6 +46,24 @@ Avg.Personal.Use<-model.avg(All_models_Personal.Use, subset=delta<2) # model ave
 Avg.Personal.Use$coefTable # parameter estimates and SEs from average model
 ```
 
+Plot model
+
+```{r}
+final<-lmer(avg_log ~migration_category+breed_lat_avg_log+p_distance_log+mass_avg_log + (1 | family/sp1_genus) ,data=comp,na.action = na.pass)
+pdf("C:/Users/Kira Delmore/Documents/PhD/Analysis/Comparative-Analysis/visreg_migration.pdf",width=3.5,height=3.5)
+#visreg(final,"migration_category",xlab="migration category", line=c(lwd=2), points=list(col="black",cex=5))
+visreg(final,"migration_category",xlab="migration category",ylab="overall phenotypic divergence")
+dev.off()
+
+final<-lmer(avg_log ~migration_category+breed_lat_avg_log+p_distance_log+mass_avg_log + (1 | family/sp1_genus) ,data=comp,na.action = na.pass)
+pdf("C:/Users/Kira Delmore/Documents/PhD/Analysis/Comparative-Analysis/visreg_all.pdf",width=4,height=4)
+#visreg(final,"migration_category",xlab="migration category", line=c(lwd=2), points=list(col="black",cex=5))
+visreg(Global_Personal.Use,ylab="overall phenotypic divergence",points=list(cex=0.5),line=c(lwd=2))
+dev.off()
+
+```
+
+
 Each set of traits separately
 
 ```{r}
